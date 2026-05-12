@@ -1,181 +1,343 @@
-import { Image } from 'expo-image';
-import { SymbolView } from 'expo-symbols';
-import React from 'react';
-import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, { useEffect, useState } from "react";
+import {
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  useColorScheme,
+  useWindowDimensions,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { ExternalLink } from '@/components/external-link';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Collapsible } from '@/components/ui/collapsible';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { useNotes } from "@/contexts/notes-context";
 
-export default function TabTwoScreen() {
-  const safeAreaInsets = useSafeAreaInsets();
-  const insets = {
-    ...safeAreaInsets,
-    bottom: safeAreaInsets.bottom + BottomTabInset + Spacing.three,
-  };
-  const theme = useTheme();
+export default function NoteEditorScreen() {
+  const systemScheme = useColorScheme();
+  const { height, width } = useWindowDimensions();
+  const isDark = systemScheme === "dark";
+  const isTablet = width >= 900;
+  const {
+    notes,
+    activeNoteId,
+    setActiveNoteId,
+    createNote,
+    updateNote,
+    deleteNote,
+  } = useNotes();
+  const activeNote = notes.find((note) => note.id === activeNoteId) ?? null;
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-  const contentPlatformStyle = Platform.select({
-    android: {
-      paddingTop: insets.top,
-      paddingLeft: insets.left,
-      paddingRight: insets.right,
-      paddingBottom: insets.bottom,
+  useEffect(() => {
+    setTitle(activeNote?.title ?? "");
+    setContent(activeNote?.content ?? "");
+  }, [activeNoteId, activeNote?.title, activeNote?.content]);
+
+  const colors = isDark
+    ? {
+        background: "#0E0F12",
+        surface: "#171A1F",
+        text: "#F3F6FA",
+        textSecondary: "#A9B3C1",
+        accent: "#81C7F5",
+        border: "#2B313A",
+      }
+    : {
+        background: "#F6F4F0",
+        surface: "#FFFFFF",
+        text: "#1B1E23",
+        textSecondary: "#5B6572",
+        accent: "#1C6EA4",
+        border: "#E5DED3",
+      };
+
+  const headerHeight = Math.max(160, Math.min(240, height * 0.28));
+  const contentPadding = isTablet ? 48 : 24;
+
+  const overlayStyle = StyleSheet.flatten([
+    styles.headerOverlay,
+    {
+      backgroundColor: isDark
+        ? "rgba(11, 13, 16, 0.55)"
+        : "rgba(255, 255, 255, 0.65)",
     },
-    web: {
-      paddingTop: Spacing.six,
-      paddingBottom: Spacing.four,
-    },
-  });
+  ]);
 
   return (
-    <ScrollView
-      style={[styles.scrollView, { backgroundColor: theme.background }]}
-      contentInset={insets}
-      contentContainerStyle={[styles.contentContainer, contentPlatformStyle]}>
-      <ThemedView style={styles.container}>
-        <ThemedView style={styles.titleContainer}>
-          <ThemedText type="subtitle">Explore</ThemedText>
-          <ThemedText style={styles.centerText} themeColor="textSecondary">
-            This starter app includes example{'\n'}code to help you get started.
-          </ThemedText>
+    <SafeAreaView
+      style={[styles.screen, { backgroundColor: colors.background }]}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.flex}
+      >
+        <ScrollView
+          contentContainerStyle={[styles.scrollContent, { paddingBottom: 40 }]}
+          keyboardShouldPersistTaps="handled"
+        >
+          <ImageBackground
+            source={{
+              uri: "https://images.unsplash.com/photo-1469474968028-56623f02e42e",
+            }}
+            resizeMode="cover"
+            style={[styles.header, { height: headerHeight }]}
+            imageStyle={styles.headerImage}
+          >
+            <View style={overlayStyle}>
+              <View
+                style={[
+                  styles.headerBar,
+                  { paddingHorizontal: contentPadding },
+                ]}
+              >
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.ghostButton,
+                    { borderColor: colors.border },
+                    pressed && styles.pressed,
+                  ]}
+                  onPress={() => setActiveNoteId(null)}
+                >
+                  <Text
+                    style={[styles.ghostButtonText, { color: colors.text }]}
+                  >
+                    Back
+                  </Text>
+                </Pressable>
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.primaryButton,
+                    { backgroundColor: colors.accent },
+                    pressed && styles.pressed,
+                  ]}
+                  onPress={() => {
+                    if (activeNoteId) {
+                      updateNote(activeNoteId, title, content);
+                      return;
+                    }
+                    createNote(title, content);
+                  }}
+                >
+                  <Text style={styles.primaryButtonText}>Save</Text>
+                </Pressable>
+              </View>
+              <View
+                style={[
+                  styles.headerText,
+                  { paddingHorizontal: contentPadding },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.headerEyebrow,
+                    { color: colors.textSecondary },
+                  ]}
+                >
+                  Note Editor
+                </Text>
+                <Text style={[styles.headerTitle, { color: colors.text }]}>
+                  Write something worth keeping.
+                </Text>
+              </View>
+            </View>
+          </ImageBackground>
 
-          <ExternalLink href="https://docs.expo.dev" asChild>
-            <Pressable style={({ pressed }) => pressed && styles.pressed}>
-              <ThemedView type="backgroundElement" style={styles.linkButton}>
-                <ThemedText type="link">Expo documentation</ThemedText>
-                <SymbolView
-                  tintColor={theme.text}
-                  name={{ ios: 'arrow.up.right.square', android: 'link', web: 'link' }}
-                  size={12}
-                />
-              </ThemedView>
-            </Pressable>
-          </ExternalLink>
-        </ThemedView>
+          <View
+            style={[
+              styles.editorCard,
+              { backgroundColor: colors.surface, borderColor: colors.border },
+              { marginHorizontal: contentPadding },
+            ]}
+          >
+            <Text style={[styles.inputLabel, { color: colors.textSecondary }]}>
+              Title
+            </Text>
+            <TextInput
+              placeholder="Add a strong title"
+              placeholderTextColor={colors.textSecondary}
+              value={title}
+              onChangeText={setTitle}
+              style={[styles.titleInput, { color: colors.text }]}
+            />
 
-        <ThemedView style={styles.sectionsWrapper}>
-          <Collapsible title="File-based routing">
-            <ThemedText type="small">
-              This app has two screens: <ThemedText type="code">src/app/index.tsx</ThemedText> and{' '}
-              <ThemedText type="code">src/app/explore.tsx</ThemedText>
-            </ThemedText>
-            <ThemedText type="small">
-              The layout file in <ThemedText type="code">src/app/_layout.tsx</ThemedText> sets up
-              the tab navigator.
-            </ThemedText>
-            <ExternalLink href="https://docs.expo.dev/router/introduction">
-              <ThemedText type="linkPrimary">Learn more</ThemedText>
-            </ExternalLink>
-          </Collapsible>
-
-          <Collapsible title="Android, iOS, and web support">
-            <ThemedView type="backgroundElement" style={styles.collapsibleContent}>
-              <ThemedText type="small">
-                You can open this project on Android, iOS, and the web. To open the web version,
-                press <ThemedText type="smallBold">w</ThemedText> in the terminal running this
-                project.
-              </ThemedText>
-              <Image
-                source={require('@/assets/images/tutorial-web.png')}
-                style={styles.imageTutorial}
-              />
-            </ThemedView>
-          </Collapsible>
-
-          <Collapsible title="Images">
-            <ThemedText type="small">
-              For static images, you can use the <ThemedText type="code">@2x</ThemedText> and{' '}
-              <ThemedText type="code">@3x</ThemedText> suffixes to provide files for different
-              screen densities.
-            </ThemedText>
-            <Image source={require('@/assets/images/react-logo.png')} style={styles.imageReact} />
-            <ExternalLink href="https://reactnative.dev/docs/images">
-              <ThemedText type="linkPrimary">Learn more</ThemedText>
-            </ExternalLink>
-          </Collapsible>
-
-          <Collapsible title="Light and dark mode components">
-            <ThemedText type="small">
-              This template has light and dark mode support. The{' '}
-              <ThemedText type="code">useColorScheme()</ThemedText> hook lets you inspect what the
-              user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-            </ThemedText>
-            <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-              <ThemedText type="linkPrimary">Learn more</ThemedText>
-            </ExternalLink>
-          </Collapsible>
-
-          <Collapsible title="Animations">
-            <ThemedText type="small">
-              This template includes an example of an animated component. The{' '}
-              <ThemedText type="code">src/components/ui/collapsible.tsx</ThemedText> component uses
-              the powerful <ThemedText type="code">react-native-reanimated</ThemedText> library to
-              animate opening this hint.
-            </ThemedText>
-          </Collapsible>
-        </ThemedView>
-        {Platform.OS === 'web' && <WebBadge />}
-      </ThemedView>
-    </ScrollView>
+            <Text style={[styles.inputLabel, { color: colors.textSecondary }]}>
+              Note
+            </Text>
+            <TextInput
+              placeholder="Start typing your note..."
+              placeholderTextColor={colors.textSecondary}
+              multiline
+              textAlignVertical="top"
+              value={content}
+              onChangeText={setContent}
+              style={[styles.bodyInput, { color: colors.text }]}
+            />
+            <View style={styles.editorActions}>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.secondaryButton,
+                  { borderColor: colors.border },
+                  pressed && styles.pressed,
+                ]}
+                onPress={() => {
+                  setTitle("");
+                  setContent("");
+                  setActiveNoteId(null);
+                }}
+              >
+                <Text
+                  style={[styles.secondaryButtonText, { color: colors.text }]}
+                >
+                  New Draft
+                </Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.secondaryButton,
+                  { borderColor: colors.border },
+                  pressed && styles.pressed,
+                ]}
+                onPress={() => {
+                  if (!activeNoteId) {
+                    return;
+                  }
+                  deleteNote(activeNoteId);
+                  setTitle("");
+                  setContent("");
+                }}
+              >
+                <Text
+                  style={[
+                    styles.secondaryButtonText,
+                    { color: colors.textSecondary },
+                  ]}
+                >
+                  Delete
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
+  screen: {
     flex: 1,
   },
-  contentContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+  flex: {
+    flex: 1,
   },
-  container: {
-    maxWidth: MaxContentWidth,
+  scrollContent: {
     flexGrow: 1,
   },
-  titleContainer: {
-    gap: Spacing.three,
-    alignItems: 'center',
-    paddingHorizontal: Spacing.four,
-    paddingVertical: Spacing.six,
+  header: {
+    justifyContent: "flex-end",
   },
-  centerText: {
-    textAlign: 'center',
+  headerImage: {
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+  },
+  headerOverlay: {
+    flex: 1,
+    justifyContent: "space-between",
+    paddingBottom: 20,
+    paddingTop: 8,
+  },
+  headerBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  ghostButton: {
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 18,
+    paddingVertical: 8,
+  },
+  ghostButtonText: {
+    fontSize: 14,
+    fontWeight: "600",
+    letterSpacing: 0.3,
+  },
+  primaryButton: {
+    borderRadius: 999,
+    paddingHorizontal: 20,
+    paddingVertical: 9,
+  },
+  primaryButtonText: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "700",
+    letterSpacing: 0.4,
   },
   pressed: {
-    opacity: 0.7,
+    opacity: 0.85,
   },
-  linkButton: {
-    flexDirection: 'row',
-    paddingHorizontal: Spacing.four,
-    paddingVertical: Spacing.two,
-    borderRadius: Spacing.five,
-    justifyContent: 'center',
-    gap: Spacing.one,
-    alignItems: 'center',
+  headerText: {
+    gap: 6,
   },
-  sectionsWrapper: {
-    gap: Spacing.five,
-    paddingHorizontal: Spacing.four,
-    paddingTop: Spacing.three,
+  headerEyebrow: {
+    fontSize: 12,
+    textTransform: "uppercase",
+    letterSpacing: 1.2,
   },
-  collapsibleContent: {
-    alignItems: 'center',
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: "700",
+    maxWidth: 320,
   },
-  imageTutorial: {
-    width: '100%',
-    aspectRatio: 296 / 171,
-    borderRadius: Spacing.three,
-    marginTop: Spacing.two,
+  editorCard: {
+    marginTop: -24,
+    borderWidth: 1,
+    borderRadius: 24,
+    padding: 20,
+    gap: 14,
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
-  imageReact: {
-    width: 100,
-    height: 100,
-    alignSelf: 'center',
+  editorActions: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 12,
+    marginTop: 8,
+  },
+  secondaryButton: {
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    flex: 1,
+    alignItems: "center",
+  },
+  secondaryButtonText: {
+    fontSize: 12,
+    fontWeight: "600",
+    letterSpacing: 0.3,
+  },
+  inputLabel: {
+    fontSize: 12,
+    textTransform: "uppercase",
+    letterSpacing: 1.1,
+  },
+  titleInput: {
+    fontSize: 20,
+    fontWeight: "600",
+    paddingBottom: 4,
+  },
+  bodyInput: {
+    minHeight: 220,
+    fontSize: 16,
+    lineHeight: 24,
+    paddingBottom: 12,
   },
 });
