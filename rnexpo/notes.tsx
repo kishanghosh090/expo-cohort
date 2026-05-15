@@ -247,3 +247,43 @@ const styles = StyleSheet.create({});
 //   button: {},
 //   active: {},
 // });
+// import React from "react";
+// import { Pressable, StyleSheet, Text, useWindowDimensions } from "react-native";
+
+// import * as ScreenOrientation from "expo-screen-orientation";
+// import { SafeAreaView } from "react-native-safe-area-context";
+// const HomeScreen = () => {
+//   const { height, width } = useWindowDimensions();
+//   console.log(height);
+//   console.log(width);
+
+//   const isTablet = width >= 768;
+//   const isLandScape = width > height;
+
+//   const lockLandScape = async () => {
+//     await ScreenOrientation.lockAsync(
+//       ScreenOrientation.OrientationLock.LANDSCAPE,
+//     );
+//   };
+//   const lockPotrait = async () => {
+//     await ScreenOrientation.lockAsync(
+//       ScreenOrientation.OrientationLock.PORTRAIT,
+//     );
+//   };
+
+//   return (
+//     <SafeAreaView>
+//       <Text>HomeScreen</Text>
+//       <Pressable onPress={lockLandScape}>
+//         <Text>landscape</Text>
+//       </Pressable>
+//       <Pressable onPress={lockPotrait}>
+//         <Text>portrait</Text>
+//       </Pressable>
+//     </SafeAreaView>
+//   );
+// };
+
+// export default HomeScreen;
+
+// const styles = StyleSheet.create({});
