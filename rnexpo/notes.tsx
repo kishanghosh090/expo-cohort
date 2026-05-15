@@ -179,3 +179,71 @@ const styles = StyleSheet.create({});
 // export default HomeScreen;
 
 // const styles = StyleSheet.create({});
+
+/// -------------
+// import React from "react";
+// import { StatusBar, StyleSheet, Text, View } from "react-native";
+// import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+// // safeAreaView, useSafeAreaInsets
+// // initialWindowMatirx
+// // StyleSheets -> create, compose, flatten
+// // Responsiveness -> useWindowDimensions, useColorScheme
+
+// function UnSafeView() {
+//   const insets = useSafeAreaInsets();
+//   console.log(insets);
+
+//   return (
+//     <View
+//       style={{
+//         paddingTop: insets.top,
+//         paddingLeft: insets.left,
+//       }}
+//     >
+//       <StatusBar barStyle={"default"} />
+//       <Text>hello</Text>
+//     </View>
+//   );
+// }
+
+// const HomeScreen = () => {
+//   return (
+//     // <SafeAreaView>
+//     //   <StatusBar />
+//     //   <Text>HomeScreen</Text>
+//     // </SafeAreaView>
+//     <>
+//       <UnSafeView />
+//     </>
+//   );
+// };
+
+// export default HomeScreen;
+
+// const styles = StyleSheet.create({});
+// import { StatusBar } from "expo-status-bar";
+// import React from "react";
+// import { StyleSheet, Text, View } from "react-native";
+
+// const HomeScreen = () => {
+//   const isActive = true;
+
+//   const bottomStyle = StyleSheet.compose(
+//     styles.button,
+//     isActive ? styles.active : null,
+//   );
+//   return (
+//     <View>
+//       <StatusBar style="dark" />
+//       <Text>HomeScreen</Text>
+//     </View>
+//   );
+// };
+
+// export default HomeScreen;
+
+// const styles = StyleSheet.create({
+//   button: {},
+//   active: {},
+// });
