@@ -1,8 +1,6 @@
 import * as React from "react";
 import { Alert, Platform, Pressable } from "react-native";
-
 import { Ionicons } from "@expo/vector-icons";
-
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   createDrawerNavigator,
@@ -11,7 +9,11 @@ import {
   DrawerItemList,
   useDrawerStatus,
 } from "@react-navigation/drawer";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import {
+  DrawerActions,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { TAB_CONFIG } from "../../constants/tabConfig";
 import { TabIcon } from "../../components/TabIcon";
 import { Storage } from "../../utils/asyncStorage";
@@ -20,6 +22,7 @@ import { SearchScreen } from "../search/Search";
 import { OrdersScreen } from "../orders/Orders";
 import { HomeScreen } from "../Home/Home";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import SettingsScreen from "../settings/Settings";
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -45,6 +48,8 @@ const baseTabBarStyle = {
 function DrawerAwareScreen({ children }: { children: React.ReactNode }) {
   const navigation = useNavigation<any>();
   const drawerStatus = useDrawerStatus();
+  const route = useRoute();
+  console.log(route.name);
 
   React.useEffect(() => {
     navigation.getParent()?.setOptions({
@@ -151,7 +156,7 @@ function HomeDrawer() {
       >
         {() => (
           <DrawerAwareScreen>
-            <HomeScreen />
+            <OrdersScreen />
           </DrawerAwareScreen>
         )}
       </Drawer.Screen>
@@ -166,7 +171,7 @@ function HomeDrawer() {
       >
         {() => (
           <DrawerAwareScreen>
-            <HomeScreen />
+            <SettingsScreen />
           </DrawerAwareScreen>
         )}
       </Drawer.Screen>
@@ -214,7 +219,9 @@ export default function MainScreen() {
     >
       <Tab.Screen
         name="Home"
-        component={HomeDrawer}
+        component={() => {
+          return <HomeDrawer />;
+        }}
         options={{
           headerShown: false,
         }}
