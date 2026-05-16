@@ -8,7 +8,7 @@ import Splash from "./src/screens/splash/Splash";
 import { Storage } from "./src/utils/asyncStorage";
 import SignUpScreen from "./src/screens/signup/SignUp";
 import SignInScreen from "./src/screens/signin/SignIn";
-import MainScreen from "./src/screens/home/Home";
+import MainScreen from "./src/screens/main/Main";
 
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);

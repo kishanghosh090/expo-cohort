@@ -1,7 +1,7 @@
 import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export function HomeScreen() {
+export function OrdersScreen() {
   return (
     <SafeAreaView
       style={{
@@ -17,7 +17,7 @@ export function HomeScreen() {
           fontWeight: "700",
         }}
       >
-        Home Screen
+        Orders Screen
       </Text>
     </SafeAreaView>
   );

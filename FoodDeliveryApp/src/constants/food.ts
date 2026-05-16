@@ -105,3 +105,32 @@ export const RESTURANT_LIST = [
     menu: [],
   },
 ];
+
+export const MENU_CATEGORIES = [
+  {
+    id: 0,
+    name: "Pizza",
+    image: "https://www.pizzahut.com/assets/welcome/images/pizza-hut-logo.png",
+  },
+  {
+    id: 1,
+    name: "Burgers",
+    image: "https://www.burgerking.com/assets/images/bk-logo.png",
+  },
+  {
+    id: 2,
+    name: "Sushi",
+    image: "https://www.sushiexpress.com/assets/images/sushi-express-logo.png",
+  },
+  {
+    id: 3,
+    name: "Desserts",
+    image:
+      "https://www.dessertheaven.com/assets/images/dessert-heaven-logo.png",
+  },
+  {
+    id: 4,
+    name: "Drinks",
+    image: "https://www.drinkdelight.com/assets/images/drink-delight-logo.png",
+  },
+];
