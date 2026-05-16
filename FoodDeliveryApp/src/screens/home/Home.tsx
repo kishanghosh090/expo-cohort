@@ -1,28 +1,48 @@
 import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import {
-  createStaticNavigation,
-  useNavigation,
-} from "@react-navigation/native";
+import { Text, View } from "react-native";
+import { useNavigation, NavigationContainer, NavigationIndependentTree } from "@react-navigation/native";
 import { Button } from "@react-navigation/elements";
-import { Storage } from "../../utils/asyncStorage";
-export default function HomeScreen() {
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+function HomeScreen() {
   const navigation = useNavigation<any>();
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Home Screen</Text>
-      <Button
-        onPress={async () => {
-          const storage = new Storage();
-          await storage.removeData();
-          navigation.replace("Onboarding");
-        }}
-      >
+      <Button onPress={() => navigation.navigate("Profile")}>
         Go to Profile
       </Button>
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+function ProfileScreen() {
+  const navigation = useNavigation<any>();
+
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>Profile Screen</Text>
+      <Button onPress={() => navigation.navigate("Home")}>Go to Home</Button>
+    </View>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+
+function MyTabs() {
+  return (
+    <Tab.Navigator initialRouteName="Home">
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+}
+
+export default function MainScreen() {
+  return (
+    <NavigationIndependentTree>
+      <MyTabs />
+    </NavigationIndependentTree>
+  );
+}

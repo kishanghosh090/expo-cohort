@@ -1,17 +1,14 @@
 import * as React from "react";
 import { Text, View } from "react-native";
-import {
-  createStaticNavigation,
-  useNavigation,
-} from "@react-navigation/native";
-import { Button } from "@react-navigation/elements";
+import { createStaticNavigation } from "@react-navigation/native";
+
 import { createStackNavigator } from "@react-navigation/stack";
 import Onboarding from "./src/screens/onboarding/Onboarding";
 import Splash from "./src/screens/splash/Splash";
 import { Storage } from "./src/utils/asyncStorage";
-import HomeScreen from "./src/screens/home/Home";
 import SignUpScreen from "./src/screens/signup/SignUp";
 import SignInScreen from "./src/screens/signin/SignIn";
+import MainScreen from "./src/screens/home/Home";
 
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -68,7 +65,7 @@ export default function App() {
               headerShown: false,
             },
           },
-          Home: { screen: HomeScreen },
+          Home: { screen: MainScreen, options: { headerShown: false } },
         },
       }),
     [initialRoute],
