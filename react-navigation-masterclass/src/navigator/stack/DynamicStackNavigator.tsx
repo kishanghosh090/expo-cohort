@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 
 function MyStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{}}>
       <Stack.Screen
         name="Home"
         component={HomeScreen}
@@ -45,3 +45,5 @@ export default function DynamicStack() {
     </NavigationContainer>
   );
 }
+
+// Animations assignment

@@ -9,7 +9,12 @@ import DetailedScreen from "../../screens/DetailedScreen";
 const Stack = createNativeStackNavigator({
   initialRouteName: "Home",
   screens: {
-    Home: HomeScreen,
+    Home: {
+      screen: HomeScreen,
+      options:{
+        
+      }
+    },
     Detail: DetailedScreen,
   },
 });
