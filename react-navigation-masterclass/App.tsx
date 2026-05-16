@@ -1,5 +1,6 @@
 // import * as React from "react";
 
+import { DrawerNavigator } from "./src/navigator/drawer/StaticDrawerNavigator";
 import DynamicTabNavigator from "./src/navigator/tabs/DynamicTabNavigator";
 
 // import DynamicStack from "./src/navigator/stack/DynamicStackNavigator";
@@ -18,5 +19,5 @@ import DynamicTabNavigator from "./src/navigator/tabs/DynamicTabNavigator";
 // -------- bottom tabs
 
 export default function App() {
-  return <DynamicTabNavigator />;
+  return <DrawerNavigator />;
 }
