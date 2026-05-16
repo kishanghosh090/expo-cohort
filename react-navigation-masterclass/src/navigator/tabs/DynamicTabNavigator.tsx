@@ -4,40 +4,19 @@ import { useNavigation, NavigationContainer } from "@react-navigation/native";
 import { Button } from "@react-navigation/elements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import HomeScreen from "../../screens/HomeScreen";
+import DetailedScreen from "../../screens/DetailedScreen";
+import SearchScreen from "../../screens/SearchScreen";
 
-function HomeScreen() {
-  const navigation = useNavigation<any>();
+const HomeStack = createNativeStackNavigator();
 
+function HomeStackScreen() {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
-      <Button onPress={() => navigation.navigate("Profile")}>
-        Go to Profile
-      </Button>
-    </View>
-  );
-}
-function SearchScreen() {
-  const navigation = useNavigation<any>();
-
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
-      <Button onPress={() => navigation.navigate("Search")}>
-        Go to Profile
-      </Button>
-    </View>
-  );
-}
-
-function ProfileScreen() {
-  const navigation = useNavigation<any>();
-
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Profile Screen</Text>
-      <Button onPress={() => navigation.navigate("Home")}>Go to Home</Button>
-    </View>
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="Details" component={DetailedScreen} />
+    </HomeStack.Navigator>
   );
 }
 
@@ -68,14 +47,11 @@ function MyTabs() {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackScreen}
         options={{
-          title: "Dashboard",
-          tabBarLabel: "Dashboard",
-          tabBarBadge: 12,
+          headerShown: false,
         }}
       />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
     </Tab.Navigator>
   );
