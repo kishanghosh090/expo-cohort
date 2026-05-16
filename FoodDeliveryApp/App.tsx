@@ -6,50 +6,82 @@ import {
 } from "@react-navigation/native";
 import { Button } from "@react-navigation/elements";
 import { createStackNavigator } from "@react-navigation/stack";
-import SignUp from "./src/screens/signup/SignUp";
-import SignIn from "./src/screens/signin/SignIn";
 import Onboarding from "./src/screens/onboarding/Onboarding";
-
-function HomeScreen() {
-  const navigation = useNavigation<any>();
-
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
-      <Button onPress={() => navigation.navigate("Profile")}>
-        Go to Profile
-      </Button>
-    </View>
-  );
-}
-
-const MyStack = createStackNavigator({
-  initialRouteName: "Onboarding",
-  screens: {
-    Onboarding: {
-      screen: Onboarding,
-      options: {
-        headerShown: false,
-      },
-    },
-    Login: {
-      screen: SignIn,
-      options: {
-        headerShown: false,
-      },
-    },
-    SignUp: {
-      screen: SignUp,
-      options: {
-        headerShown: false,
-      },
-    },
-    Home: { screen: HomeScreen },
-  },
-});
-
-const Navigation = createStaticNavigation(MyStack);
+import Splash from "./src/screens/splash/Splash";
+import { Storage } from "./src/utils/asyncStorage";
+import HomeScreen from "./src/screens/home/Home";
+import SignUpScreen from "./src/screens/signup/SignUp";
+import SignInScreen from "./src/screens/signin/SignIn";
 
 export default function App() {
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [initialRoute, setInitialRoute] = React.useState<"Onboarding" | "Home">(
+    "Onboarding",
+  );
+
+  React.useEffect(() => {
+    let isMounted = true;
+    const load = async () => {
+      try {
+        const storage = new Storage();
+        const seen = await storage.getData();
+        if (isMounted) {
+          setInitialRoute(seen != null ? "Home" : "Onboarding");
+        }
+      } catch (error) {
+        if (isMounted) {
+          setInitialRoute("Onboarding");
+        }
+      } finally {
+        if (isMounted) {
+          setTimeout(() => setIsLoading(false), 700);
+        }
+      }
+    };
+
+    load();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const Stack = React.useMemo(
+    () =>
+      createStackNavigator({
+        initialRouteName: initialRoute,
+        screens: {
+          Onboarding: {
+            screen: Onboarding,
+            options: {
+              headerShown: false,
+            },
+          },
+          Login: {
+            screen: SignInScreen,
+            options: {
+              headerShown: false,
+            },
+          },
+          SignUp: {
+            screen: SignUpScreen,
+            options: {
+              headerShown: false,
+            },
+          },
+          Home: { screen: HomeScreen },
+        },
+      }),
+    [initialRoute],
+  );
+
+  const Navigation = React.useMemo(
+    () => createStaticNavigation(Stack),
+    [Stack],
+  );
+
+  if (isLoading) {
+    return <Splash />;
+  }
+
   return <Navigation />;
 }

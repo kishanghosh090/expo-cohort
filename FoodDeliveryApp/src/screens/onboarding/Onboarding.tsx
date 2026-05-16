@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Onboarding = () => {
   const navigation = useNavigation<any>();
@@ -29,6 +30,11 @@ const Onboarding = () => {
       }),
     ]).start();
   }, [fade, rise]);
+
+  const handleGetStarted = async () => {
+    await AsyncStorage.setItem("hasSeenOnboarding", "true");
+    navigation.replace("Login");
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -75,16 +81,13 @@ const Onboarding = () => {
           </View>
         </View>
 
-        <Pressable
-          style={styles.primaryButton}
-          onPress={() => navigation.replace("Login")}
-        >
+        <Pressable style={styles.primaryButton} onPress={handleGetStarted}>
           <Text style={styles.primaryButtonText}>Get Started</Text>
         </Pressable>
 
         <View style={styles.secondaryRow}>
           <Text style={styles.secondaryText}>Already a member?</Text>
-          <Pressable onPress={() => navigation.replace("Login")}>
+          <Pressable onPress={handleGetStarted}>
             <Text style={styles.secondaryLink}>Sign in</Text>
           </Pressable>
         </View>

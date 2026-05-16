@@ -2,6 +2,7 @@ import {
   Animated,
   Image,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -10,13 +11,21 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-const SignUp = () => {
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Storage } from "../../utils/asyncStorage";
+const SignUpScreen = () => {
   const navigation = useNavigation<any>();
   const fade = useRef(new Animated.Value(0)).current;
   const slide = useRef(new Animated.Value(16)).current;
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
+  const popupScale = useRef(new Animated.Value(0.9)).current;
 
   useEffect(() => {
     Animated.parallel([
@@ -33,8 +42,66 @@ const SignUp = () => {
     ]).start();
   }, [fade, slide]);
 
+  const isValidEmail = (value: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+
+  const handleSignUp = async () => {
+    const trimmedName = fullName.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedName || !trimmedEmail || !trimmedPassword) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    if (!isValidEmail(trimmedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (trimmedPassword.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
+    const asyncStorageValue = `${trimmedEmail}:${trimmedPassword}`;
+    const storage = new Storage();
+    await storage.storeData(asyncStorageValue);
+    
+    setError("");
+    setShowSuccess(true);
+    Animated.spring(popupScale, {
+      toValue: 1,
+      useNativeDriver: true,
+      friction: 7,
+      tension: 90,
+    }).start();
+    setTimeout(() => {
+      setShowSuccess(false);
+      navigation.replace("Login");
+    }, 1200);
+  };
+
   return (
     <SafeAreaView style={styles.safe}>
+      <Modal transparent visible={showSuccess} animationType="fade">
+        <View style={styles.modalOverlay}>
+          <Animated.View
+            style={[styles.modalCard, { transform: [{ scale: popupScale }] }]}
+          >
+            <Image
+              source={require("../../../assets/chai-logo.png")}
+              style={styles.modalLogo}
+              resizeMode="contain"
+            />
+            <Text style={styles.modalTitle}>Signup successful</Text>
+            <Text style={styles.modalSubtitle}>
+              You can now log in and start ordering.
+            </Text>
+          </Animated.View>
+        </View>
+      </Modal>
       <View style={styles.background}>
         <View style={styles.glowTop} />
         <View style={styles.glowBottom} />
@@ -80,6 +147,8 @@ const SignUp = () => {
                 placeholder="Jane Doe"
                 placeholderTextColor="#9aa0a6"
                 style={styles.input}
+                value={fullName}
+                onChangeText={setFullName}
               />
             </View>
             <View style={styles.fieldGroup}>
@@ -90,6 +159,8 @@ const SignUp = () => {
                 style={styles.input}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
               />
             </View>
             <View style={styles.fieldGroup}>
@@ -99,10 +170,14 @@ const SignUp = () => {
                 placeholderTextColor="#9aa0a6"
                 style={styles.input}
                 secureTextEntry
+                value={password}
+                onChangeText={setPassword}
               />
             </View>
 
-            <Pressable style={styles.primaryButton}>
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+            <Pressable style={styles.primaryButton} onPress={handleSignUp}>
               <Text style={styles.primaryButtonText}>Create account</Text>
             </Pressable>
 
@@ -121,7 +196,7 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpScreen;
 
 const styles = StyleSheet.create({
   safe: {
@@ -225,6 +300,11 @@ const styles = StyleSheet.create({
     borderColor: "#ebe3d9",
     color: "#222",
   },
+  errorText: {
+    marginTop: 12,
+    color: "#d64545",
+    fontSize: 13,
+  },
   primaryButton: {
     marginTop: 24,
     paddingVertical: 16,
@@ -253,5 +333,41 @@ const styles = StyleSheet.create({
     color: "#ff7a3d",
     fontSize: 14,
     fontWeight: "600",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(15, 12, 10, 0.35)",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 24,
+  },
+  modalCard: {
+    width: "100%",
+    maxWidth: 320,
+    borderRadius: 22,
+    backgroundColor: "#ffffff",
+    padding: 22,
+    alignItems: "center",
+    shadowColor: "#1a1a1a",
+    shadowOpacity: 0.15,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 12 },
+    elevation: 8,
+  },
+  modalLogo: {
+    width: 48,
+    height: 48,
+    marginBottom: 12,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#2b2b2b",
+  },
+  modalSubtitle: {
+    marginTop: 6,
+    fontSize: 13,
+    color: "#6d6d6d",
+    textAlign: "center",
   },
 });

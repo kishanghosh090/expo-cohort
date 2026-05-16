@@ -10,14 +10,18 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const SignIn = () => {
+const SignInScreen = () => {
   const navigation = useNavigation<any>();
   const fade = useRef(new Animated.Value(0)).current;
   const slide = useRef(new Animated.Value(16)).current;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     Animated.parallel([
@@ -33,6 +37,35 @@ const SignIn = () => {
       }),
     ]).start();
   }, [fade, slide]);
+
+  const isValidEmail = (value: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+
+  const handleSignIn = async () => {
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedEmail || !trimmedPassword) {
+      setError("Please enter your email and password.");
+      return;
+    }
+
+    if (!isValidEmail(trimmedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (trimmedPassword.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
+    const asyncStorageValue = `${trimmedEmail}:${trimmedPassword}`;
+    const storage = new Storage();
+    await storage.storeData(asyncStorageValue);
+    setError("");
+    navigation.replace("Home");
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -83,6 +116,8 @@ const SignIn = () => {
                 style={styles.input}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
               />
             </View>
             <View style={styles.fieldGroup}>
@@ -92,10 +127,14 @@ const SignIn = () => {
                 placeholderTextColor="#9aa0a6"
                 style={styles.input}
                 secureTextEntry
+                value={password}
+                onChangeText={setPassword}
               />
             </View>
 
-            <Pressable style={styles.primaryButton}>
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+            <Pressable style={styles.primaryButton} onPress={handleSignIn}>
               <Text style={styles.primaryButtonText}>Sign in</Text>
             </Pressable>
 
@@ -114,7 +153,7 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignInScreen;
 
 const styles = StyleSheet.create({
   safe: {
@@ -217,6 +256,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e0e3f2",
     color: "#1f2430",
+  },
+  errorText: {
+    marginTop: 12,
+    color: "#d64545",
+    fontSize: 13,
   },
   primaryButton: {
     marginTop: 24,
