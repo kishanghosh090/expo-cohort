@@ -10,6 +10,7 @@ const Home = () => {
       <Link href={"/user/kishanranaghosh"}>id</Link>
       <Link href={"/username/kishanranaghoshsssssc"}>name</Link>
       <Link href={"/docs/ssss/getting-started/23dddsd"}>name</Link>
+      <Link href={"/newdocs/hello/from/chai/code"}>... catche all</Link>
     </View>
   );
 };
