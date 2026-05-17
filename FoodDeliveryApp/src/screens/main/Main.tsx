@@ -137,6 +137,7 @@ function HomeDrawer() {
           drawerIcon: ({ color, size }) => (
             <Ionicons name="home-outline" size={size} color={color} />
           ),
+          
         }}
       >
         {() => (
