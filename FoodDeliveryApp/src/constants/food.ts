@@ -5,7 +5,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.8,
-    menu: [],
+    menu: [4, 14, 13, 24],
   },
   {
     id: 1,
@@ -13,7 +13,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.5,
-    menu: [],
+    menu: [0, 7],
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.0,
-    menu: [],
+    menu: [1, 10],
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1562967916-eb82221dfb92?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.2,
-    menu: [],
+    menu: [18],
   },
   {
     id: 4,
@@ -37,7 +37,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1540713434306-58505cf1b6fc?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.3,
-    menu: [],
+    menu: [8, 10],
   },
   {
     id: 5,
@@ -45,7 +45,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.1,
-    menu: [],
+    menu: [1],
   },
   {
     id: 6,
@@ -53,7 +53,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.0,
-    menu: [],
+    menu: [11, 20],
   },
   {
     id: 7,
@@ -61,7 +61,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.4,
-    menu: [],
+    menu: [0, 7],
   },
   {
     id: 8,
@@ -69,7 +69,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.6,
-    menu: [],
+    menu: [4, 14],
   },
   {
     id: 9,
@@ -77,7 +77,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1481931715705-36f7a7f3a0a5?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.3,
-    menu: [],
+    menu: [13, 24],
   },
   {
     id: 10,
@@ -85,7 +85,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.2,
-    menu: [],
+    menu: [9, 22],
   },
   {
     id: 11,
@@ -93,7 +93,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.5,
-    menu: [],
+    menu: [11, 20],
   },
   {
     id: 12,
@@ -101,7 +101,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.4,
-    menu: [],
+    menu: [12],
   },
   {
     id: 13,
@@ -109,7 +109,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.7,
-    menu: [],
+    menu: [3, 13, 24],
   },
   {
     id: 14,
@@ -117,7 +117,7 @@ export const POPPULAR_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.9,
-    menu: [],
+    menu: [5, 6, 15, 21],
   },
 ];
 
@@ -161,7 +161,7 @@ export const NEARBY_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.3,
-    menu: [],
+    menu: [10, 1, 23],
   },
   {
     id: 1,
@@ -169,7 +169,7 @@ export const NEARBY_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.5,
-    menu: [],
+    menu: [14, 13, 24],
   },
   {
     id: 2,
@@ -177,7 +177,7 @@ export const NEARBY_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.2,
-    menu: [],
+    menu: [12, 23, 10],
   },
   {
     id: 3,
@@ -185,7 +185,7 @@ export const NEARBY_RESTURANT_LIST = [
     image:
       "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.4,
-    menu: [],
+    menu: [18, 11, 20],
   },
 ];
 

@@ -1,5 +1,6 @@
 import {
   FlatList,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -15,7 +16,10 @@ import {
 import { FoodCategoryCard } from "../../components/FoodCategoryCard";
 import { RestaurantCard } from "../../components/ResturantCard";
 
+import { useNavigation } from "@react-navigation/native";
+
 export function HomeScreen() {
+  const navigator = useNavigation<any>();
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
@@ -36,14 +40,15 @@ export function HomeScreen() {
               <Text style={styles.headerAvatarText}>JD</Text>
             </View>
           </View>
-          <View style={styles.searchBar}>
+          <Pressable
+            style={styles.searchBar}
+            onPress={() => {
+              navigator.navigate("Search");
+            }}
+          >
             <Text style={styles.searchIcon}>Search</Text>
-            <TextInput
-              placeholder="Search restaurants, dishes..."
-              placeholderTextColor="#9c9aa0"
-              style={styles.searchInput}
-            />
-          </View>
+            <Text style={styles.searchPlaceholder}>Dishes, restaurants, or cuisines</Text>
+          </Pressable>
         </View>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -196,6 +201,10 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     color: "#1b1b1f",
+  },
+  searchPlaceholder: {
+    fontSize: 14,
+    color: "#9c9aa0",
   },
   section: {
     marginBottom: 28,
