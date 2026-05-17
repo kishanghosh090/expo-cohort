@@ -25,13 +25,14 @@ export default function RootLayout() {
         />
       </Stack.Protected>
       <Stack.Protected guard={isLoggedIn}>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="index"
           options={{
             title: "Home",
           }}
         />
-        <Stack.Screen name="about" />
+        <Stack.Screen name="about" /> */}
+        <Stack.Screen name="(tabs)" />
       </Stack.Protected>
     </Stack>
   );
