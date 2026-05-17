@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
+  Pressable,
   StyleSheet,
   Text,
   TextInput,
@@ -10,8 +11,10 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FOOD_ITEMS } from "../../constants/food";
 import { FoodItemCard } from "../../components/FoodItemCard";
+import { useNavigation } from "@react-navigation/native";
 
 export function SearchScreen() {
+  const navigation = useNavigation<any>();
   const [foodItems, setFoodItems] = useState<null | any[]>(null);
 
   const [search, setSearch] = useState("");
@@ -87,13 +90,22 @@ export function SearchScreen() {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
           renderItem={({ item, index }) => (
-            <FoodItemCard
-              name={item.name}
-              description={item.description}
-              image={item.image}
-              price={item.price}
-              index={index}
-            />
+            <Pressable
+              onPress={() => {
+                navigation.navigate("FoodItemDetails", {
+                  itemId: item.id,
+                  foodName: item.name,
+                });
+              }}
+            >
+              <FoodItemCard
+                name={item.name}
+                description={item.description}
+                image={item.image}
+                price={item.price}
+                index={index}
+              />
+            </Pressable>
           )}
         />
       ) : (

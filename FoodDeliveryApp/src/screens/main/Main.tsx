@@ -19,11 +19,12 @@ import { TAB_CONFIG } from "../../constants/tabConfig";
 import { TabIcon } from "../../components/TabIcon";
 import { Storage } from "../../utils/asyncStorage";
 import ProfileScreen from "../profile/Profile";
-import { SearchScreen } from "../search/Search";
+
 import { OrdersScreen } from "../orders/Orders";
 import HomeScreenNavigator from "../Home/Home";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SettingsScreen from "../settings/Settings";
+import SearchNavigator from "../search/SearchNavigator";
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -210,6 +211,7 @@ function HomeDrawer() {
 }
 
 export default function MainScreen() {
+  const route = useRoute();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
@@ -249,7 +251,19 @@ export default function MainScreen() {
         }}
       />
 
-      <Tab.Screen name="Search" component={SearchScreen} />
+      <Tab.Screen
+        name="Search"
+        component={SearchNavigator}
+        options={({ route }) => {
+          const focusedRouteName =
+            getFocusedRouteNameFromRoute(route) ?? "SearchRoot";
+          const showSearchHeader = focusedRouteName === "SearchRoot";
+
+          return {
+            headerShown: showSearchHeader,
+          };
+        }}
+      />
 
       <Tab.Screen name="Orders" component={OrdersScreen} />
 
