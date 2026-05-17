@@ -7,7 +7,9 @@ const Home = () => {
     <View>
       <Text>Home</Text>
       <Link href={"/profile/details"}>About</Link>
-      <Link href={"/kishanranaghosh"}>name</Link>
+      <Link href={"/user/kishanranaghosh"}>id</Link>
+      <Link href={"/username/kishanranaghoshsssssc"}>name</Link>
+      <Link href={"/docs/ssss/getting-started/23dddsd"}>name</Link>
     </View>
   );
 };
