@@ -6,7 +6,8 @@ const Home = () => {
   return (
     <View>
       <Text>Home</Text>
-      <Link href={"/about"}>About</Link>
+      <Link href={"/profile/details"}>About</Link>
+      <Link href={"/kishanranaghosh"}>name</Link>
     </View>
   );
 };
