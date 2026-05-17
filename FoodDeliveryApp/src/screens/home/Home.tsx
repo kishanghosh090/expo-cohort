@@ -4,7 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,8 +17,11 @@ import { FoodCategoryCard } from "../../components/FoodCategoryCard";
 import { RestaurantCard } from "../../components/ResturantCard";
 
 import { useNavigation } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import FoodDetails from "../foodDetails/FoodDetails";
+import FoodListForResturantScreen from "../foodDetails/FoodListForResturant";
 
-export function HomeScreen() {
+function HomeScreen() {
   const navigator = useNavigation<any>();
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -47,7 +50,9 @@ export function HomeScreen() {
             }}
           >
             <Text style={styles.searchIcon}>Search</Text>
-            <Text style={styles.searchPlaceholder}>Dishes, restaurants, or cuisines</Text>
+            <Text style={styles.searchPlaceholder}>
+              Dishes, restaurants, or cuisines
+            </Text>
           </Pressable>
         </View>
         <View style={styles.section}>
@@ -61,11 +66,20 @@ export function HomeScreen() {
             keyExtractor={(item) => item.id.toString()}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }) => (
-              <FoodCategoryCard
-                name={item.name}
-                image={item.image}
-                index={index}
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  navigator.navigate("foodDetails", {
+                    itemId: item.id,
+                    foodName: item.name,
+                  });
+                }}
+              >
+                <FoodCategoryCard
+                  name={item.name}
+                  image={item.image}
+                  index={index}
+                />
+              </TouchableOpacity>
             )}
           />
         </View>
@@ -77,14 +91,23 @@ export function HomeScreen() {
           </View>
           <View style={styles.listStack}>
             {POPPULAR_RESTURANT_LIST.map((item, index) => (
-              <RestaurantCard
+              <TouchableOpacity
                 key={item.id}
-                name={item.name}
-                image={item.image}
-                rating={item.rating}
-                index={index}
-                variant="wide"
-              />
+                onPress={() => {
+                  navigator.navigate("foodListForResturat", {
+                    resId: item.id,
+                    resName: item.name,
+                  });
+                }}
+              >
+                <RestaurantCard
+                  name={item.name}
+                  image={item.image}
+                  rating={item.rating}
+                  index={index}
+                  variant="wide"
+                />
+              </TouchableOpacity>
             ))}
           </View>
         </View>
@@ -115,6 +138,37 @@ export function HomeScreen() {
   );
 }
 
+const Stack = createStackNavigator();
+
+function MyStack() {
+  return (
+    <Stack.Navigator initialRouteName="home">
+      <Stack.Screen
+        name="home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="foodDetails"
+        component={FoodDetails}
+        options={({ route }) => ({
+          title:
+            (route.params as { foodName: string }).foodName ?? "Food Details",
+        })}
+      />
+      <Stack.Screen
+        name="foodListForResturat"
+        options={({ route }) => ({
+          title: (route.params as { resName: string }).resName ?? "Restaurant",
+        })}
+        component={FoodListForResturantScreen}
+      />
+    </Stack.Navigator>
+  );
+}
+export default function HomeScreenNavigator() {
+  return <MyStack />;
+}
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

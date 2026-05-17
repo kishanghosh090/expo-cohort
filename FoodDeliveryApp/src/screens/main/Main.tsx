@@ -11,6 +11,7 @@ import {
 } from "@react-navigation/drawer";
 import {
   DrawerActions,
+  getFocusedRouteNameFromRoute,
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
@@ -20,7 +21,7 @@ import { Storage } from "../../utils/asyncStorage";
 import ProfileScreen from "../profile/Profile";
 import { SearchScreen } from "../search/Search";
 import { OrdersScreen } from "../orders/Orders";
-import { HomeScreen } from "../Home/Home";
+import HomeScreenNavigator from "../Home/Home";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SettingsScreen from "../settings/Settings";
 
@@ -109,6 +110,7 @@ function HomeDrawer() {
       )}
       screenOptions={({ navigation }) => ({
         headerTitle: "Home",
+        headerShown: true,
         headerShadowVisible: false,
         drawerStyle: {
           backgroundColor: "#ffffff",
@@ -132,24 +134,34 @@ function HomeDrawer() {
     >
       <Drawer.Screen
         name="HomeRoot"
-        options={{
-          title: "Home",
-          drawerIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" size={size} color={color} />
-          ),
-          
+        options={({ route }) => {
+          const focusedRouteName =
+            getFocusedRouteNameFromRoute(route) ?? "home";
+          const showHeader =
+            focusedRouteName === "home" ||
+            focusedRouteName == "orders" ||
+            focusedRouteName == "profile";
+
+          return {
+            title: "Home",
+            headerShown: showHeader,
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="home-outline" size={size} color={color} />
+            ),
+          };
         }}
       >
         {() => (
           <DrawerAwareScreen>
-            <HomeScreen />
+            <HomeScreenNavigator />
           </DrawerAwareScreen>
         )}
       </Drawer.Screen>
       <Drawer.Screen
-        name="MyOrders"
+        name="orders"
         options={{
           title: "My Orders",
+          headerShown: true,
           drawerIcon: ({ color, size }) => (
             <Ionicons name="receipt-outline" size={size} color={color} />
           ),
@@ -165,6 +177,7 @@ function HomeDrawer() {
         name="Settings"
         options={{
           title: "Settings",
+          headerShown: true,
           drawerIcon: ({ color, size }) => (
             <Ionicons name="settings-outline" size={size} color={color} />
           ),
@@ -180,6 +193,7 @@ function HomeDrawer() {
         name="Help"
         options={{
           title: "Help",
+          headerShown: true,
           drawerIcon: ({ color, size }) => (
             <Ionicons name="help-circle-outline" size={size} color={color} />
           ),
@@ -187,7 +201,7 @@ function HomeDrawer() {
       >
         {() => (
           <DrawerAwareScreen>
-            <HomeScreen />
+            <HomeScreenNavigator />
           </DrawerAwareScreen>
         )}
       </Drawer.Screen>
@@ -220,11 +234,18 @@ export default function MainScreen() {
     >
       <Tab.Screen
         name="Home"
-        component={() => {
-          return <HomeDrawer />;
-        }}
-        options={{
-          headerShown: false,
+        component={HomeDrawer}
+        options={({ route }) => {
+          const focusedRouteName =
+            getFocusedRouteNameFromRoute(route) ?? "home";
+          const showHomeChrome = focusedRouteName === "home";
+
+          return {
+            headerShown: false,
+            tabBarStyle: showHomeChrome
+              ? { ...baseTabBarStyle }
+              : { display: "none" },
+          };
         }}
       />
 

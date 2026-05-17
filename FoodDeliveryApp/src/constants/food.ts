@@ -6,6 +6,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.8,
     menu: [4, 14, 13, 24],
+    categoryIds: [4, 3],
   },
   {
     id: 1,
@@ -14,6 +15,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.5,
     menu: [0, 7],
+    categoryIds: [0, 1],
   },
   {
     id: 2,
@@ -22,6 +24,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.0,
     menu: [1, 10],
+    categoryIds: [1],
   },
   {
     id: 3,
@@ -30,6 +33,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1562967916-eb82221dfb92?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.2,
     menu: [18],
+    categoryIds: [1],
   },
   {
     id: 4,
@@ -38,6 +42,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1540713434306-58505cf1b6fc?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.3,
     menu: [8, 10],
+    categoryIds: [1],
   },
   {
     id: 5,
@@ -46,6 +51,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.1,
     menu: [1],
+    categoryIds: [1],
   },
   {
     id: 6,
@@ -54,6 +60,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.0,
     menu: [11, 20],
+    categoryIds: [1],
   },
   {
     id: 7,
@@ -62,6 +69,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.4,
     menu: [0, 7],
+    categoryIds: [0, 1],
   },
   {
     id: 8,
@@ -70,6 +78,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.6,
     menu: [4, 14],
+    categoryIds: [4],
   },
   {
     id: 9,
@@ -78,6 +87,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1481931715705-36f7a7f3a0a5?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.3,
     menu: [13, 24],
+    categoryIds: [3, 4],
   },
   {
     id: 10,
@@ -86,6 +96,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.2,
     menu: [9, 22],
+    categoryIds: [1],
   },
   {
     id: 11,
@@ -94,6 +105,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.5,
     menu: [11, 20],
+    categoryIds: [1],
   },
   {
     id: 12,
@@ -102,6 +114,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.4,
     menu: [12],
+    categoryIds: [1],
   },
   {
     id: 13,
@@ -110,6 +123,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.7,
     menu: [3, 13, 24],
+    categoryIds: [3, 4],
   },
   {
     id: 14,
@@ -118,6 +132,7 @@ export const POPPULAR_RESTURANT_LIST = [
       "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.9,
     menu: [5, 6, 15, 21],
+    categoryIds: [1],
   },
 ];
 
@@ -192,6 +207,7 @@ export const NEARBY_RESTURANT_LIST = [
 export const FOOD_ITEMS = [
   {
     id: 0,
+    categoryId: 0,
     name: "Margherita Pizza",
     description: "Classic pizza with tomato sauce, mozzarella, and basil.",
     price: 12.99,
@@ -200,6 +216,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 1,
+    categoryId: 1,
     name: "Cheeseburger",
     description: "Juicy beef patty with cheese, lettuce, tomato, and onion.",
     price: 10.99,
@@ -208,6 +225,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 2,
+    categoryId: 2,
     name: "California Roll",
     description: "Sushi roll with crab, avocado, and cucumber.",
     price: 8.99,
@@ -216,6 +234,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 3,
+    categoryId: 3,
     name: "Chocolate Cake",
     description: "Rich chocolate cake with creamy frosting.",
     price: 6.99,
@@ -224,6 +243,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 4,
+    categoryId: 4,
     name: "Mojito",
     description: "Refreshing cocktail with rum, mint, lime, and soda.",
     price: 7.99,
@@ -232,6 +252,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 5,
+    categoryId: 1,
     name: "Chicken Biryani",
     description: "Spiced basmati rice with tender chicken and herbs.",
     price: 13.49,
@@ -240,6 +261,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 6,
+    categoryId: 1,
     name: "Paneer Tikka",
     description: "Grilled paneer cubes with smoky spices.",
     price: 9.99,
@@ -248,6 +270,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 7,
+    categoryId: 1,
     name: "Pad Thai",
     description: "Stir-fried rice noodles with peanuts and lime.",
     price: 11.49,
@@ -256,6 +279,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 8,
+    categoryId: 1,
     name: "Falafel Wrap",
     description: "Crispy falafel with tahini and fresh veggies.",
     price: 8.99,
@@ -264,6 +288,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 9,
+    categoryId: 1,
     name: "Ramen Bowl",
     description: "Rich broth with noodles, egg, and scallions.",
     price: 12.49,
@@ -272,6 +297,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 10,
+    categoryId: 1,
     name: "Caesar Salad",
     description: "Crisp romaine with parmesan and croutons.",
     price: 7.49,
@@ -280,6 +306,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 11,
+    categoryId: 1,
     name: "Fish Tacos",
     description: "Grilled fish with slaw and zesty crema.",
     price: 10.49,
@@ -288,6 +315,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 12,
+    categoryId: 1,
     name: "Veggie Pasta",
     description: "Pasta tossed with seasonal vegetables and herbs.",
     price: 11.99,
@@ -296,6 +324,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 13,
+    categoryId: 3,
     name: "Berry Pancakes",
     description: "Fluffy pancakes topped with fresh berries.",
     price: 8.49,
@@ -304,6 +333,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 14,
+    categoryId: 4,
     name: "Iced Latte",
     description: "Chilled espresso with milk and light sweetness.",
     price: 4.99,
@@ -312,6 +342,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 15,
+    categoryId: 1,
     name: "Butter Chicken",
     description: "Creamy tomato curry with tender chicken pieces.",
     price: 13.99,
@@ -320,6 +351,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 16,
+    categoryId: 1,
     name: "Greek Salad",
     description: "Fresh veggies, feta, olives, and olive oil dressing.",
     price: 7.99,
@@ -328,6 +360,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 17,
+    categoryId: 1,
     name: "Samosa Plate",
     description: "Crispy samosas served with mint chutney.",
     price: 5.99,
@@ -336,6 +369,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 18,
+    categoryId: 1,
     name: "BBQ Chicken Wings",
     description: "Sticky BBQ wings with a smoky finish.",
     price: 9.49,
@@ -344,6 +378,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 19,
+    categoryId: 1,
     name: "Avocado Toast",
     description: "Toasted sourdough topped with smashed avocado.",
     price: 6.99,
@@ -352,6 +387,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 20,
+    categoryId: 1,
     name: "Beef Burrito",
     description: "Flour tortilla stuffed with beef, beans, and rice.",
     price: 10.99,
@@ -360,6 +396,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 21,
+    categoryId: 1,
     name: "Tandoori Naan",
     description: "Soft naan bread baked in a tandoor.",
     price: 2.99,
@@ -368,6 +405,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 22,
+    categoryId: 1,
     name: "Veggie Stir Fry",
     description: "Colorful vegetables tossed in a savory sauce.",
     price: 9.49,
@@ -376,6 +414,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 23,
+    categoryId: 1,
     name: "Mushroom Risotto",
     description: "Creamy risotto with sauteed mushrooms.",
     price: 12.49,
@@ -384,6 +423,7 @@ export const FOOD_ITEMS = [
   },
   {
     id: 24,
+    categoryId: 4,
     name: "Strawberry Milkshake",
     description: "Thick milkshake blended with fresh strawberries.",
     price: 5.49,
