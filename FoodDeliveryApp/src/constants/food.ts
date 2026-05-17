@@ -2,9 +2,9 @@ export const POPPULAR_RESTURANT_LIST = [
   {
     id: 0,
     name: "Chai Code Cafe",
-    image:
-      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&h=400&q=80",
-    rating: 4.8,
+    image: "https://chaicode.com/assets/white-3-CGLYt1t0.webp",
+    imageFit: "contain",
+    rating: 5,
     menu: [4, 14, 13, 24],
     categoryIds: [4, 3],
   },

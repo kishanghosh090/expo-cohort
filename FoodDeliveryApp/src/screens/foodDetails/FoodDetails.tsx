@@ -23,7 +23,11 @@ const FoodDetails = ({ route }: any) => {
         renderItem={({ item, index }) => (
           <View style={styles.card}>
             <View style={styles.mediaWrap}>
-              <Image source={{ uri: item.image }} style={styles.mediaImage} />
+              <Image
+                source={{ uri: item.image }}
+                style={styles.mediaImage}
+                resizeMode={item.imageFit ?? "cover"}
+              />
               <View style={styles.mediaShade} />
             </View>
             <View style={styles.cardHeader}>
@@ -77,10 +81,12 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: "hidden",
     marginBottom: 12,
+    backgroundColor: "#f4e6d9",
   },
   mediaImage: {
     width: "100%",
     height: "100%",
+    backgroundColor: "#f4e6d9",
   },
   mediaShade: {
     position: "absolute",

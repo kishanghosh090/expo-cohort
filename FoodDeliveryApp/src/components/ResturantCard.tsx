@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 type RestaurantCardProps = {
   name: string;
   image: string;
+  imageFit?: "cover" | "contain";
   rating: number;
   index?: number;
   variant?: "wide" | "compact";
@@ -12,6 +13,7 @@ type RestaurantCardProps = {
 export function RestaurantCard({
   name,
   image,
+  imageFit,
   rating,
   index = 0,
   variant = "wide",
@@ -48,13 +50,15 @@ export function RestaurantCard({
     [progress],
   );
 
+  const resolvedFit = imageFit ?? "cover";
+
   const imageScale = useMemo(
     () =>
       progress.interpolate({
         inputRange: [0, 1],
-        outputRange: [1.06, 1],
+        outputRange: [resolvedFit === "cover" ? 1.06 : 1, 1],
       }),
-    [progress],
+    [progress, resolvedFit],
   );
 
   const isCompact = variant === "compact";
@@ -74,6 +78,7 @@ export function RestaurantCard({
           isCompact ? styles.compactImage : styles.wideImage,
           { transform: [{ scale: imageScale }] },
         ]}
+        resizeMode={resolvedFit}
       />
       <View style={styles.imageShade} />
       <View style={styles.ratingFloat}>
@@ -117,6 +122,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
+    backgroundColor: "#f4e6d9",
   },
   wideImage: {
     height: 170,

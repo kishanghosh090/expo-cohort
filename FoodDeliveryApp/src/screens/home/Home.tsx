@@ -103,6 +103,7 @@ function HomeScreen() {
                 <RestaurantCard
                   name={item.name}
                   image={item.image}
+                  imageFit={(item as any).imageFit}
                   rating={item.rating}
                   index={index}
                   variant="wide"
@@ -126,6 +127,7 @@ function HomeScreen() {
               <RestaurantCard
                 name={item.name}
                 image={item.image}
+                imageFit={(item as any).imageFit}
                 rating={item.rating}
                 index={index}
                 variant="compact"
