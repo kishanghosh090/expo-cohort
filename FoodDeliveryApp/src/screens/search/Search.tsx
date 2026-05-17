@@ -12,9 +12,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { FOOD_ITEMS } from "../../constants/food";
 import { FoodItemCard } from "../../components/FoodItemCard";
 import { useNavigation } from "@react-navigation/native";
+import { useAppTheme } from "../../theme/ThemeProvider";
 
 export function SearchScreen() {
   const navigation = useNavigation<any>();
+  const { theme } = useAppTheme();
   const [foodItems, setFoodItems] = useState<null | any[]>(null);
 
   const [search, setSearch] = useState("");
@@ -48,13 +50,11 @@ export function SearchScreen() {
 
   return (
     <SafeAreaView
-      style={{
-        flex: 1,
-      }}
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
       <TextInput
         placeholder="Search restaurants, dishes..."
-        placeholderTextColor="#9c9aa0"
+        placeholderTextColor={theme.colors.placeholder}
         onChangeText={(text) => {
           setSearch(text);
           setIsLoading(true);
@@ -62,22 +62,43 @@ export function SearchScreen() {
             filterByName();
           }, 200);
         }}
-        style={{
-          height: 50,
-          margin: 12,
-          borderWidth: 1,
-          borderColor: "#e5e5e5",
-          borderRadius: 8,
-          paddingHorizontal: 16,
-        }}
+        style={[
+          styles.searchInput,
+          {
+            borderColor: theme.colors.border,
+            backgroundColor: theme.colors.surface,
+            color: theme.colors.text,
+          },
+        ]}
       />
       {foodItems != null && foodItems.length == 0 && (
-        <View style={styles.emptyState}>
-          <View style={styles.emptyBadge}>
-            <Text style={styles.emptyBadgeText}>No match</Text>
+        <View
+          style={[
+            styles.emptyState,
+            {
+              backgroundColor: theme.colors.surface,
+              borderColor: theme.colors.border,
+            },
+          ]}
+        >
+          <View
+            style={[
+              styles.emptyBadge,
+              { backgroundColor: theme.colors.accentSoft },
+            ]}
+          >
+            <Text
+              style={[styles.emptyBadgeText, { color: theme.colors.accent }]}
+            >
+              No match
+            </Text>
           </View>
-          <Text style={styles.emptyTitle}>Nothing delicious found</Text>
-          <Text style={styles.emptySubtitle}>
+          <Text style={[styles.emptyTitle, { color: theme.colors.text }]}>
+            Nothing delicious found
+          </Text>
+          <Text
+            style={[styles.emptySubtitle, { color: theme.colors.textMuted }]}
+          >
             Try a shorter keyword or search by cuisine.
           </Text>
         </View>
@@ -110,7 +131,7 @@ export function SearchScreen() {
         />
       ) : (
         <View style={styles.container}>
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator size="large" color={theme.colors.accent} />
         </View>
       )}
     </SafeAreaView>
@@ -123,6 +144,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  searchInput: {
+    height: 50,
+    margin: 12,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 16,
+  },
   listContent: {
     paddingHorizontal: 12,
     paddingBottom: 20,
@@ -133,10 +161,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     paddingVertical: 18,
     paddingHorizontal: 16,
-    backgroundColor: "#fffaf6",
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: "#f4e6d9",
     alignItems: "center",
     shadowColor: "#000",
     shadowOpacity: 0.08,
@@ -145,14 +171,12 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   emptyBadge: {
-    backgroundColor: "rgba(255, 122, 61, 0.16)",
     borderRadius: 999,
     paddingHorizontal: 12,
     paddingVertical: 6,
     marginBottom: 10,
   },
   emptyBadgeText: {
-    color: "#ff7a3d",
     fontSize: 11,
     fontWeight: "700",
     letterSpacing: 0.6,
@@ -161,12 +185,10 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#1b1b1f",
     marginBottom: 4,
   },
   emptySubtitle: {
     fontSize: 12,
-    color: "#7b7169",
     textAlign: "center",
     lineHeight: 18,
   },

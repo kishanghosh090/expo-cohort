@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useAppTheme } from "../../theme/ThemeProvider";
 import { Alert, Platform, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -29,9 +30,9 @@ import SearchNavigator from "../search/SearchNavigator";
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
-const baseTabBarStyle = {
+const getBaseTabBarStyle = (surfaceColor: string) => ({
   height: 90,
-  backgroundColor: "#ffffff",
+  backgroundColor: surfaceColor,
   borderTopWidth: 0,
   elevation: 0,
   paddingHorizontal: 15,
@@ -45,27 +46,29 @@ const baseTabBarStyle = {
   ...(Platform.OS === "android" && {
     elevation: 10,
   }),
-};
+});
 
 function DrawerAwareScreen({ children }: { children: React.ReactNode }) {
   const navigation = useNavigation<any>();
   const drawerStatus = useDrawerStatus();
   const route = useRoute();
+  const { theme } = useAppTheme();
   console.log(route.name);
 
   React.useEffect(() => {
     navigation.getParent()?.setOptions({
       tabBarStyle: {
-        ...baseTabBarStyle,
+        ...getBaseTabBarStyle(theme.colors.surface),
         display: drawerStatus === "open" ? "none" : "flex",
       },
     });
-  }, [drawerStatus, navigation]);
+  }, [drawerStatus, navigation, theme]);
 
   return <>{children}</>;
 }
 
 function HomeDrawer() {
+  const { theme, isDark } = useAppTheme();
   const insets = useSafeAreaInsets();
   const handleLogout = React.useCallback(async () => {
     const storage = new Storage();
@@ -82,9 +85,16 @@ function HomeDrawer() {
           <DrawerItemList {...props} />
           <DrawerItem
             label="Logout"
-            labelStyle={{ color: "#ef4444", fontWeight: "600" }}
+            labelStyle={{
+              color: isDark ? "#ff7a7a" : "#ef4444",
+              fontWeight: "600",
+            }}
             icon={({ size }) => (
-              <Ionicons name="log-out" size={size} color="#ef4444" />
+              <Ionicons
+                name="log-out"
+                size={size}
+                color={isDark ? "#ff7a7a" : "#ef4444"}
+              />
             )}
             style={{ marginTop: "auto" }}
             onPress={() => {
@@ -113,21 +123,29 @@ function HomeDrawer() {
         headerTitle: "Home",
         headerShown: true,
         headerShadowVisible: false,
-        drawerStyle: {
-          backgroundColor: "#ffffff",
+        headerStyle: {
+          backgroundColor: theme.colors.surface,
         },
-        drawerActiveTintColor: "#ff7a3d",
-        drawerInactiveTintColor: "#ff7a3d",
-        backgroundColor: "#f8fafc",
+        headerTintColor: theme.colors.text,
+        headerTitleStyle: {
+          color: theme.colors.text,
+          fontWeight: "600",
+        },
+        drawerStyle: {
+          backgroundColor: theme.colors.surface,
+        },
+        drawerActiveTintColor: theme.colors.accent,
+        drawerInactiveTintColor: theme.colors.textMuted,
+        backgroundColor: theme.colors.background,
         SceneContainerStyle: {
-          backgroundColor: "#f8fafc",
+          backgroundColor: theme.colors.background,
         },
         headerLeft: () => (
           <Pressable
             onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
             style={{ paddingHorizontal: 16 }}
           >
-            <Ionicons name="menu" size={24} color="#ff7a3d" />
+            <Ionicons name="menu" size={24} color={theme.colors.accent} />
           </Pressable>
         ),
       })}
@@ -212,6 +230,7 @@ function HomeDrawer() {
 
 export default function MainScreen() {
   const route = useRoute();
+  const { theme } = useAppTheme();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
@@ -220,7 +239,15 @@ export default function MainScreen() {
         return {
           tabBarShowLabel: false,
           tabBarStyle: {
-            ...baseTabBarStyle,
+            ...getBaseTabBarStyle(theme.colors.surface),
+          },
+          headerStyle: {
+            backgroundColor: theme.colors.surface,
+          },
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            color: theme.colors.text,
+            fontWeight: "600",
           },
 
           tabBarItemStyle: {
@@ -245,7 +272,7 @@ export default function MainScreen() {
           return {
             headerShown: false,
             tabBarStyle: showHomeChrome
-              ? { ...baseTabBarStyle }
+              ? { ...getBaseTabBarStyle(theme.colors.surface) }
               : { display: "none" },
           };
         }}

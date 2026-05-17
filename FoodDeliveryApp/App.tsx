@@ -1,14 +1,14 @@
 import * as React from "react";
-import { Text, View } from "react-native";
 import { createStaticNavigation } from "@react-navigation/native";
 
 import { createStackNavigator } from "@react-navigation/stack";
-import Onboarding from "./src/screens/onboarding/Onboarding";
-import Splash from "./src/screens/splash/Splash";
+import { OnboardingScreen as Onboarding } from "./src/screens/onboarding/Onboarding";
+import { SplashScreen as Splash } from "./src/screens/splash/Splash";
 import { Storage } from "./src/utils/asyncStorage";
-import SignUpScreen from "./src/screens/signup/SignUp";
-import SignInScreen from "./src/screens/signin/SignIn";
+import { SignUpScreen } from "./src/screens/signup/SignUp";
+import { SignInScreen } from "./src/screens/signin/SignIn";
 import MainScreen from "./src/screens/main/Main";
+import { ThemeProvider } from "./src/theme/ThemeProvider";
 
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -76,9 +76,7 @@ export default function App() {
     [Stack],
   );
 
-  if (isLoading) {
-    return <Splash />;
-  }
-
-  return <Navigation />;
+  return (
+    <ThemeProvider>{isLoading ? <Splash /> : <Navigation />}</ThemeProvider>
+  );
 }

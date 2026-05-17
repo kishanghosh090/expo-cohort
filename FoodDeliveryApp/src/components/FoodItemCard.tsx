@@ -1,5 +1,6 @@
 import { Animated, StyleSheet, Text, View } from "react-native";
 import { useEffect, useMemo, useRef } from "react";
+import { useAppTheme } from "../theme/ThemeProvider";
 
 type FoodItemCardProps = {
   name: string;
@@ -16,6 +17,7 @@ export function FoodItemCard({
   price,
   index = 0,
 }: FoodItemCardProps) {
+  const { theme } = useAppTheme();
   const progress = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -58,29 +60,62 @@ export function FoodItemCard({
   );
 
   return (
-    <Animated.View style={[styles.card, animatedStyle]}>
-      <View style={styles.mediaWrap}>
+    <Animated.View
+      style={[
+        styles.card,
+        animatedStyle,
+        {
+          backgroundColor: theme.colors.surface,
+          borderColor: theme.colors.border,
+        },
+      ]}
+    >
+      <View
+        style={[
+          styles.mediaWrap,
+          { backgroundColor: theme.colors.placeholder },
+        ]}
+      >
         <Animated.Image
           source={{ uri: image }}
           style={[styles.image, { transform: [{ scale: imageScale }] }]}
         />
         <View style={styles.imageShade} />
-        <View style={styles.pricePill}>
-          <Text style={styles.priceText}>${price.toFixed(2)}</Text>
+        <View
+          style={[styles.pricePill, { backgroundColor: theme.colors.accent }]}
+        >
+          <Text style={[styles.priceText, { color: theme.colors.surface }]}>
+            ${price.toFixed(2)}
+          </Text>
         </View>
       </View>
       <View style={styles.content}>
-        <Text numberOfLines={1} style={styles.name}>
+        <Text
+          numberOfLines={1}
+          style={[styles.name, { color: theme.colors.text }]}
+        >
           {name}
         </Text>
-        <Text numberOfLines={2} style={styles.description}>
+        <Text
+          numberOfLines={2}
+          style={[styles.description, { color: theme.colors.textMuted }]}
+        >
           {description}
         </Text>
         <View style={styles.metaRow}>
-          <View style={styles.tagPill}>
-            <Text style={styles.tagText}>Chef's pick</Text>
+          <View
+            style={[
+              styles.tagPill,
+              { backgroundColor: theme.colors.accentSoft },
+            ]}
+          >
+            <Text style={[styles.tagText, { color: theme.colors.accent }]}>
+              Chef's pick
+            </Text>
           </View>
-          <Text style={styles.metaText}>15-25 min</Text>
+          <Text style={[styles.metaText, { color: theme.colors.textMuted }]}>
+            15-25 min
+          </Text>
         </View>
       </View>
     </Animated.View>
@@ -89,11 +124,9 @@ export function FoodItemCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fffaf6",
     borderRadius: 20,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: "#f4e6d9",
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 22,
@@ -121,7 +154,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 12,
     bottom: 12,
-    backgroundColor: "#ff7a3d",
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 999,
@@ -129,7 +161,6 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255, 255, 255, 0.4)",
   },
   priceText: {
-    color: "#fffaf6",
     fontWeight: "700",
     fontSize: 13,
   },
@@ -140,11 +171,9 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#1b1b1f",
   },
   description: {
     fontSize: 12,
-    color: "#6f6760",
     lineHeight: 18,
   },
   metaRow: {
@@ -153,7 +182,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   tagPill: {
-    backgroundColor: "rgba(255, 122, 61, 0.16)",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 999,
@@ -161,11 +189,9 @@ const styles = StyleSheet.create({
   tagText: {
     fontSize: 11,
     fontWeight: "600",
-    color: "#ff7a3d",
   },
   metaText: {
     fontSize: 11,
     fontWeight: "600",
-    color: "#8b8077",
   },
 });

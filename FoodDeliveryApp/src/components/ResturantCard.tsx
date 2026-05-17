@@ -1,5 +1,6 @@
 import { Animated, StyleSheet, Text, View } from "react-native";
 import { useEffect, useMemo, useRef } from "react";
+import { useAppTheme } from "../theme/ThemeProvider";
 
 type RestaurantCardProps = {
   name: string;
@@ -18,6 +19,7 @@ export function RestaurantCard({
   index = 0,
   variant = "wide",
 }: RestaurantCardProps) {
+  const { theme } = useAppTheme();
   const progress = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -69,6 +71,10 @@ export function RestaurantCard({
         styles.card,
         isCompact ? styles.compactCard : styles.wideCard,
         animatedStyle,
+        {
+          backgroundColor: theme.colors.surface,
+          borderColor: theme.colors.border,
+        },
       ]}
     >
       <Animated.Image
@@ -91,10 +97,15 @@ export function RestaurantCard({
         </View>
       </View>
       <View style={styles.content}>
-        <Text numberOfLines={1} style={styles.name}>
+        <Text
+          numberOfLines={1}
+          style={[styles.name, { color: theme.colors.text }]}
+        >
           {name}
         </Text>
-        <Text style={styles.metaText}>Free delivery · 20-30 min</Text>
+        <Text style={[styles.metaText, { color: theme.colors.textMuted }]}>
+          Free delivery · 20-30 min
+        </Text>
       </View>
     </Animated.View>
   );
@@ -102,11 +113,9 @@ export function RestaurantCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fffaf6",
     borderRadius: 20,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: "#f4e6d9",
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 22,
@@ -122,7 +131,6 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    backgroundColor: "#f4e6d9",
   },
   wideImage: {
     height: 170,
@@ -137,11 +145,9 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#1b1b1f",
   },
   metaText: {
     fontSize: 12,
-    color: "#7a6f66",
     fontWeight: "500",
   },
   imageShade: {

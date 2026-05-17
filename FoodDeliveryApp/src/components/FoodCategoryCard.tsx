@@ -1,5 +1,6 @@
 import { Animated, StyleSheet, Text, View } from "react-native";
 import { useEffect, useMemo, useRef } from "react";
+import { useAppTheme } from "../theme/ThemeProvider";
 
 type FoodCategoryCardProps = {
   name: string;
@@ -12,6 +13,7 @@ export function FoodCategoryCard({
   image,
   index = 0,
 }: FoodCategoryCardProps) {
+  const { theme } = useAppTheme();
   const progress = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -45,11 +47,25 @@ export function FoodCategoryCard({
   );
 
   return (
-    <Animated.View style={[styles.card, animatedStyle]}>
-      <View style={styles.imageWrap}>
+    <Animated.View
+      style={[
+        styles.card,
+        animatedStyle,
+        {
+          backgroundColor: theme.colors.surface,
+          borderColor: theme.colors.border,
+        },
+      ]}
+    >
+      <View
+        style={[styles.imageWrap, { backgroundColor: theme.colors.accentSoft }]}
+      >
         <Animated.Image source={{ uri: image }} style={styles.image} />
       </View>
-      <Text style={styles.label} numberOfLines={1}>
+      <Text
+        style={[styles.label, { color: theme.colors.text }]}
+        numberOfLines={1}
+      >
         {name}
       </Text>
     </Animated.View>
@@ -61,11 +77,9 @@ const styles = StyleSheet.create({
     width: 120,
     padding: 12,
     borderRadius: 18,
-    backgroundColor: "#fffaf6",
     marginRight: 12,
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#f4e6d9",
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 18,
@@ -76,7 +90,6 @@ const styles = StyleSheet.create({
     width: 74,
     height: 74,
     borderRadius: 37,
-    backgroundColor: "rgba(255, 122, 61, 0.12)",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 8,
@@ -89,6 +102,5 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#1b1b1f",
   },
 });

@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import {
   FlatList,
   Pressable,
@@ -21,45 +22,97 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import foodDetails from "../foodDetails/FoodDetails";
 import FoodListForResturant from "../foodDetails/FoodListForResturant";
+import { useAppTheme } from "../../theme/ThemeProvider";
 
 function HomeScreen() {
   const navigator = useNavigation<any>();
+  const { theme, isDark, toggleTheme } = useAppTheme();
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: theme.colors.background }]}
+    >
       <ScrollView
         contentContainerStyle={styles.content}
         contentInsetAdjustmentBehavior="never"
       >
-        <View style={styles.header}>
+        <View
+          style={[styles.header, { backgroundColor: theme.colors.surface }]}
+        >
           <View style={styles.headerTop}>
             <View>
-              <Text style={styles.headerLabel}>Delivery</Text>
+              <Text
+                style={[styles.headerLabel, { color: theme.colors.accent }]}
+              >
+                Delivery
+              </Text>
               <View style={styles.headerRow}>
-                <Text style={styles.headerTitle}>Home</Text>
-                <Text style={styles.headerChevron}>v</Text>
+                <Text
+                  style={[styles.headerTitle, { color: theme.colors.text }]}
+                >
+                  Home
+                </Text>
+                <Text
+                  style={[styles.headerChevron, { color: theme.colors.text }]}
+                >
+                  v
+                </Text>
               </View>
-              <Text style={styles.headerSubtitle}>Sector 21, City Center</Text>
+              <Text
+                style={[
+                  styles.headerSubtitle,
+                  { color: theme.colors.textMuted },
+                ]}
+              >
+                Sector 21, City Center
+              </Text>
             </View>
-            <View style={styles.headerAvatar}>
-              <Text style={styles.headerAvatarText}>JD</Text>
-            </View>
+            <Pressable style={[styles.headerIcon]} onPress={toggleTheme}>
+              <Ionicons
+                name={isDark ? "sunny" : "moon"}
+                size={24}
+                color={theme.colors.accent}
+              />
+            </Pressable>
           </View>
           <Pressable
-            style={styles.searchBar}
+            style={[
+              styles.searchBar,
+              {
+                backgroundColor: theme.colors.accentSoft,
+                borderColor: theme.colors.border,
+              },
+            ]}
             onPress={() => {
               navigator.navigate("Search");
             }}
           >
-            <Text style={styles.searchIcon}>Search</Text>
-            <Text style={styles.searchPlaceholder}>
+            <Text style={[styles.searchIcon, { color: theme.colors.accent }]}>
+              Search
+            </Text>
+            <Text
+              style={[
+                styles.searchPlaceholder,
+                { color: theme.colors.placeholder },
+              ]}
+            >
               Dishes, restaurants, or cuisines
             </Text>
           </Pressable>
         </View>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Food Categories</Text>
-            <Text style={styles.sectionSubtitle}>Browse by craving</Text>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+              Food Categories
+            </Text>
+            <Text
+              style={[
+                styles.sectionSubtitle,
+                { color: theme.colors.textMuted },
+              ]}
+            >
+              Browse by craving
+            </Text>
           </View>
           <FlatList
             horizontal
@@ -87,8 +140,17 @@ function HomeScreen() {
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Popular Restaurants</Text>
-            <Text style={styles.sectionSubtitle}>Top picks near you</Text>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+              Popular Restaurants
+            </Text>
+            <Text
+              style={[
+                styles.sectionSubtitle,
+                { color: theme.colors.textMuted },
+              ]}
+            >
+              Top picks near you
+            </Text>
           </View>
           <View style={styles.listStack}>
             {POPPULAR_RESTURANT_LIST.map((item, index) => (
@@ -116,8 +178,17 @@ function HomeScreen() {
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Nearby Restaurants</Text>
-            <Text style={styles.sectionSubtitle}>Quick bites around you</Text>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+              Nearby Restaurants
+            </Text>
+            <Text
+              style={[
+                styles.sectionSubtitle,
+                { color: theme.colors.textMuted },
+              ]}
+            >
+              Quick bites around you
+            </Text>
           </View>
           <FlatList
             horizontal
@@ -144,8 +215,21 @@ function HomeScreen() {
 const Stack = createStackNavigator();
 
 function MyStack() {
+  const { theme } = useAppTheme();
   return (
-    <Stack.Navigator initialRouteName="home">
+    <Stack.Navigator
+      initialRouteName="home"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: theme.colors.surface,
+        },
+        headerTintColor: theme.colors.text,
+        headerTitleStyle: {
+          color: theme.colors.text,
+          fontWeight: "600",
+        },
+      }}
+    >
       <Stack.Screen
         name="home"
         component={HomeScreen}
@@ -176,7 +260,6 @@ export default function HomeScreenNavigator() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#faf6f2",
   },
   content: {
     padding: 16,
@@ -184,7 +267,6 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   header: {
-    backgroundColor: "#ffffff",
     borderRadius: 24,
     padding: 16,
     marginBottom: 12,
@@ -203,7 +285,6 @@ const styles = StyleSheet.create({
   headerLabel: {
     fontSize: 12,
     fontWeight: "700",
-    color: "#ff7a3d",
     letterSpacing: 0.6,
     textTransform: "uppercase",
   },
@@ -215,54 +296,40 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontWeight: "700",
-    color: "#1b1b1f",
   },
   headerChevron: {
     fontSize: 16,
-    color: "#1b1b1f",
     marginTop: 4,
   },
   headerSubtitle: {
     fontSize: 12,
-    color: "#6b6b6f",
   },
-  headerAvatar: {
+  headerIcon: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: "rgba(255, 122, 61, 0.15)",
     alignItems: "center",
     justifyContent: "center",
-  },
-  headerAvatarText: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#ff7a3d",
   },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255, 122, 61, 0.08)",
     borderRadius: 14,
     paddingHorizontal: 12,
     paddingVertical: 10,
     gap: 8,
     borderWidth: 1,
-    borderColor: "rgba(255, 122, 61, 0.18)",
   },
   searchIcon: {
     fontSize: 12,
     fontWeight: "700",
-    color: "#ff7a3d",
   },
   searchInput: {
     flex: 1,
     fontSize: 14,
-    color: "#1b1b1f",
   },
   searchPlaceholder: {
     fontSize: 14,
-    color: "#9c9aa0",
   },
   section: {
     marginBottom: 28,
@@ -274,11 +341,9 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#1b1b1f",
   },
   sectionSubtitle: {
     fontSize: 13,
-    color: "#6b6b6f",
   },
   listStack: {
     gap: 14,

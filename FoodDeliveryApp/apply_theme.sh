@@ -1,9 +1,13 @@
+#!/bin/bash
+
+# Update Profile screen
+cat > src/screens/profile/Profile.tsx << 'PROFILE_EOF'
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppTheme } from "../../theme/ThemeProvider";
 
 export default function ProfileScreen() {
-  const { theme, isDark } = useAppTheme();
+  const { theme } = useAppTheme();
 
   const handlePress = () => {
     Alert.alert("UI only", "This is only UI.");
@@ -18,7 +22,7 @@ export default function ProfileScreen() {
           style={[
             styles.headerGlow,
             {
-              backgroundColor: isDark
+              backgroundColor: theme.isDark
                 ? "rgba(255, 159, 107, 0.1)"
                 : "rgba(255, 122, 61, 0.2)",
             },
@@ -55,7 +59,7 @@ export default function ProfileScreen() {
             style={[
               styles.editButton,
               {
-                backgroundColor: isDark
+                backgroundColor: theme.isDark
                   ? "rgba(255, 159, 107, 0.2)"
                   : "#1b1b1f",
               },
@@ -66,7 +70,9 @@ export default function ProfileScreen() {
               style={[
                 styles.editButtonText,
                 {
-                  color: isDark ? theme.colors.accent : theme.colors.surface,
+                  color: theme.isDark
+                    ? theme.colors.accent
+                    : theme.colors.surface,
                 },
               ]}
             >
@@ -147,22 +153,20 @@ export default function ProfileScreen() {
                 Payment Methods
               </Text>
               <Text
-                style={[styles.listSubtitle, { color: theme.colors.textMuted }]}
+                style={[
+                  styles.listSubtitle,
+                  { color: theme.colors.textMuted },
+                ]}
               >
                 Cards, UPI, wallet
               </Text>
             </View>
-            <Text
-              style={[styles.listArrow, { color: theme.colors.placeholder }]}
-            >
+            <Text style={[styles.listArrow, { color: theme.colors.placeholder }]}>
               ›
             </Text>
           </Pressable>
           <View
-            style={[
-              styles.listDivider,
-              { backgroundColor: theme.colors.border },
-            ]}
+            style={[styles.listDivider, { backgroundColor: theme.colors.border }]}
           />
           <Pressable style={styles.listItem} onPress={handlePress}>
             <View style={[styles.listDot, styles.listDotAlt]} />
@@ -171,22 +175,20 @@ export default function ProfileScreen() {
                 Saved Addresses
               </Text>
               <Text
-                style={[styles.listSubtitle, { color: theme.colors.textMuted }]}
+                style={[
+                  styles.listSubtitle,
+                  { color: theme.colors.textMuted },
+                ]}
               >
                 Home, work, other
               </Text>
             </View>
-            <Text
-              style={[styles.listArrow, { color: theme.colors.placeholder }]}
-            >
+            <Text style={[styles.listArrow, { color: theme.colors.placeholder }]}>
               ›
             </Text>
           </Pressable>
           <View
-            style={[
-              styles.listDivider,
-              { backgroundColor: theme.colors.border },
-            ]}
+            style={[styles.listDivider, { backgroundColor: theme.colors.border }]}
           />
           <Pressable style={styles.listItem} onPress={handlePress}>
             <View style={[styles.listDot, styles.listDotDark]} />
@@ -195,14 +197,15 @@ export default function ProfileScreen() {
                 Notifications
               </Text>
               <Text
-                style={[styles.listSubtitle, { color: theme.colors.textMuted }]}
+                style={[
+                  styles.listSubtitle,
+                  { color: theme.colors.textMuted },
+                ]}
               >
                 Order updates
               </Text>
             </View>
-            <Text
-              style={[styles.listArrow, { color: theme.colors.placeholder }]}
-            >
+            <Text style={[styles.listArrow, { color: theme.colors.placeholder }]}>
               ›
             </Text>
           </Pressable>
@@ -229,22 +232,20 @@ export default function ProfileScreen() {
                 Help Center
               </Text>
               <Text
-                style={[styles.listSubtitle, { color: theme.colors.textMuted }]}
+                style={[
+                  styles.listSubtitle,
+                  { color: theme.colors.textMuted },
+                ]}
               >
                 FAQs and chat
               </Text>
             </View>
-            <Text
-              style={[styles.listArrow, { color: theme.colors.placeholder }]}
-            >
+            <Text style={[styles.listArrow, { color: theme.colors.placeholder }]}>
               ›
             </Text>
           </Pressable>
           <View
-            style={[
-              styles.listDivider,
-              { backgroundColor: theme.colors.border },
-            ]}
+            style={[styles.listDivider, { backgroundColor: theme.colors.border }]}
           />
           <Pressable style={styles.listItem} onPress={handlePress}>
             <View style={[styles.listDot, styles.listDotWarn]} />
@@ -253,14 +254,15 @@ export default function ProfileScreen() {
                 Privacy & Security
               </Text>
               <Text
-                style={[styles.listSubtitle, { color: theme.colors.textMuted }]}
+                style={[
+                  styles.listSubtitle,
+                  { color: theme.colors.textMuted },
+                ]}
               >
                 Control your data
               </Text>
             </View>
-            <Text
-              style={[styles.listArrow, { color: theme.colors.placeholder }]}
-            >
+            <Text style={[styles.listArrow, { color: theme.colors.placeholder }]}>
               ›
             </Text>
           </Pressable>
@@ -409,3 +411,6 @@ const styles = StyleSheet.create({
     height: 1,
   },
 });
+PROFILE_EOF
+
+echo "Profile updated"

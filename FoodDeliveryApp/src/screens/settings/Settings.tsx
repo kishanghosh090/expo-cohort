@@ -1,14 +1,38 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Text, View, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppTheme } from "../../theme/ThemeProvider";
 
-const SettingsScreen = () => {
+export default function SettingsScreen() {
+  const { theme } = useAppTheme();
+
   return (
-    <View>
-      <Text>Settings</Text>
-    </View>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: theme.colors.background },
+      ]}
+    >
+      <Text style={[styles.title, { color: theme.colors.text }]}>
+        Settings
+      </Text>
+      <Text style={[styles.subtitle, { color: theme.colors.textMuted }]}>
+        Configure your app preferences
+      </Text>
+    </SafeAreaView>
   );
-};
+}
 
-export default SettingsScreen;
-
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "700",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 14,
+  },
+});
