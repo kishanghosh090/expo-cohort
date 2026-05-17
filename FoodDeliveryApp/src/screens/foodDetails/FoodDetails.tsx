@@ -1,49 +1,62 @@
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
-import { POPPULAR_RESTURANT_LIST } from "../../constants/food";
+import { FOOD_ITEMS, POPPULAR_RESTURANT_LIST } from "../../constants/food";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const FoodDetails = ({ route }: any) => {
-  const { itemId } = route.params;
-  const [foodHaveInResturant, setfoodHaveInResturant] = useState<any>([]);
-
+const foodDetails = ({ route }: any) => {
+  const { resId } = route.params;
+  const [food, setFoods] = useState<any[]>([]);
   useEffect(() => {
-    const res = POPPULAR_RESTURANT_LIST.filter((item) =>
-      item.categoryIds.includes(itemId),
-    );
-    setfoodHaveInResturant(res ? res : []);
-  }, [itemId]);
+    const res = POPPULAR_RESTURANT_LIST.filter((item) => item.id == resId);
+    const resMenu = res[0]?.menu ?? [];
 
+    const foods = FOOD_ITEMS.filter((food) => {
+      return resMenu.includes(food.id);
+    });
+    setFoods(foods ? foods : []);
+  }, [resId]);
   return (
     <SafeAreaView style={styles.safeArea}>
       <FlatList
-        data={foodHaveInResturant}
+        data={food}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContent}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <View style={styles.card}>
             <View style={styles.mediaWrap}>
-              <Image
-                source={{ uri: item.image }}
-                style={styles.mediaImage}
-                resizeMode={item.imageFit ?? "cover"}
-              />
-              <View style={styles.mediaShade} />
+              <Image source={{ uri: item.image }} style={styles.mediaImage} />
             </View>
-            <View style={styles.cardHeader}>
-              <Text style={styles.cardBadge}>Popular</Text>
-              <Text style={styles.cardRating}>★ {item.rating.toFixed(1)}</Text>
+            <View style={styles.cardBody}>
+              <View style={styles.cardText}>
+                <Text style={styles.cardTitle} numberOfLines={1}>
+                  {item.name}
+                </Text>
+                <Text style={styles.cardSubtitle} numberOfLines={2}>
+                  {item.description}
+                </Text>
+              </View>
+              <View style={styles.cardActions}>
+                <Text style={styles.price}>${item.price.toFixed(2)}</Text>
+                <Pressable style={styles.addButton}>
+                  <Text style={styles.addButtonText}>+</Text>
+                </Pressable>
+              </View>
             </View>
-            <Text style={styles.cardTitle} numberOfLines={1}>
-              {item.name}
-            </Text>
-            <Text style={styles.cardSubtitle}>Free delivery · 20-30 min</Text>
           </View>
         )}
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Text style={styles.emptyTitle}>No restaurants found</Text>
-            <Text style={styles.emptySubtitle}>Try a different category.</Text>
+            <Text style={styles.emptyTitle}>No items found</Text>
+            <Text style={styles.emptySubtitle}>
+              This restaurant has no items yet.
+            </Text>
           </View>
         }
       />
@@ -51,7 +64,7 @@ const FoodDetails = ({ route }: any) => {
   );
 };
 
-export default FoodDetails;
+export default foodDetails;
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -64,70 +77,72 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "#fffaf6",
-    borderRadius: 20,
-    padding: 16,
-    marginBottom: 14,
+    borderRadius: 18,
     borderWidth: 1,
     borderColor: "#f4e6d9",
+    marginBottom: 14,
+    overflow: "hidden",
     shadowColor: "#000",
     shadowOpacity: 0.08,
-    shadowRadius: 18,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 10 },
     elevation: 3,
   },
   mediaWrap: {
     width: "100%",
-    height: 160,
-    borderRadius: 16,
-    overflow: "hidden",
-    marginBottom: 12,
+    height: 140,
     backgroundColor: "#f4e6d9",
   },
   mediaImage: {
     width: "100%",
     height: "100%",
-    backgroundColor: "#f4e6d9",
+    resizeMode: "cover",
   },
-  mediaShade: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 60,
-    backgroundColor: "rgba(27, 27, 31, 0.2)",
+  cardBody: {
+    padding: 14,
+    gap: 10,
   },
-  cardHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 8,
-  },
-  cardBadge: {
-    backgroundColor: "rgba(255, 122, 61, 0.16)",
-    color: "#ff7a3d",
-    fontSize: 11,
-    fontWeight: "700",
-    letterSpacing: 0.6,
-    textTransform: "uppercase",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 999,
-  },
-  cardRating: {
-    color: "#1b1b1f",
-    fontSize: 12,
-    fontWeight: "700",
+  cardText: {
+    gap: 4,
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "700",
     color: "#1b1b1f",
-    marginBottom: 4,
   },
   cardSubtitle: {
     fontSize: 12,
     color: "#7b7169",
-    fontWeight: "500",
+    lineHeight: 18,
+  },
+  cardActions: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  price: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#1b1b1f",
+  },
+  addButton: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: "#ff7a3d",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#ff7a3d",
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 3,
+  },
+  addButtonText: {
+    color: "#fffaf6",
+    fontSize: 20,
+    fontWeight: "700",
+    marginTop: -1,
   },
   emptyState: {
     marginTop: 32,

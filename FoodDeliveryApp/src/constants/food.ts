@@ -84,7 +84,7 @@ export const POPPULAR_RESTURANT_LIST = [
     id: 9,
     name: "Dunkin' Donuts",
     image:
-      "https://images.unsplash.com/photo-1481931715705-36f7a7f3a0a5?auto=format&fit=crop&w=600&h=400&q=80",
+      "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=600&h=400&q=80",
     rating: 4.3,
     menu: [13, 24],
     categoryIds: [3, 4],

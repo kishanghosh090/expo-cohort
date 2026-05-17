@@ -18,8 +18,9 @@ import { RestaurantCard } from "../../components/ResturantCard";
 
 import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import FoodDetails from "../foodDetails/FoodDetails";
-import FoodListForResturantScreen from "../foodDetails/FoodListForResturant";
+
+import foodDetails from "../foodDetails/FoodDetails";
+import FoodListForResturant from "../foodDetails/FoodListForResturant";
 
 function HomeScreen() {
   const navigator = useNavigation<any>();
@@ -68,7 +69,7 @@ function HomeScreen() {
             renderItem={({ item, index }) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigator.navigate("foodDetails", {
+                  navigator.navigate("foodListForResturat", {
                     itemId: item.id,
                     foodName: item.name,
                   });
@@ -152,18 +153,19 @@ function MyStack() {
       />
       <Stack.Screen
         name="foodDetails"
-        component={FoodDetails}
+        component={foodDetails}
         options={({ route }) => ({
           title:
-            (route.params as { foodName: string }).foodName ?? "Food Details",
+            (route.params as { resName: string }).resName ?? "Food Details",
         })}
       />
       <Stack.Screen
         name="foodListForResturat"
         options={({ route }) => ({
-          title: (route.params as { resName: string }).resName ?? "Restaurant",
+          title:
+            (route.params as { foodName: string }).foodName ?? "Restaurant",
         })}
-        component={FoodListForResturantScreen}
+        component={FoodListForResturant}
       />
     </Stack.Navigator>
   );
