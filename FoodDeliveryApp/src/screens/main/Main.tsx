@@ -26,6 +26,7 @@ import HomeScreenNavigator from "../Home/Home";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SettingsScreen from "../settings/Settings";
 import SearchNavigator from "../search/SearchNavigator";
+import HelpScreen from "../help/Help";
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -120,7 +121,6 @@ function HomeDrawer() {
         </DrawerContentScrollView>
       )}
       screenOptions={({ navigation }) => ({
-        headerTitle: "Home",
         headerShown: true,
         headerShadowVisible: false,
         headerStyle: {
@@ -178,6 +178,12 @@ function HomeDrawer() {
       </Drawer.Screen>
       <Drawer.Screen
         name="orders"
+        listeners={({ navigation }) => ({
+          drawerItemPress: (e) => {
+            e.preventDefault();
+            navigation.getParent()?.navigate("Orders");
+          },
+        })}
         options={{
           title: "My Orders",
           headerShown: true,
@@ -220,7 +226,7 @@ function HomeDrawer() {
       >
         {() => (
           <DrawerAwareScreen>
-            <HomeScreenNavigator />
+            <HelpScreen />
           </DrawerAwareScreen>
         )}
       </Drawer.Screen>
