@@ -7,7 +7,11 @@ const Stack = createNativeStackNavigator();
 
 function MyStack() {
   return (
-    <Stack.Navigator screenOptions={{}}>
+    <Stack.Navigator
+      screenOptions={{
+        animation: "ios_from_right",
+      }}
+    >
       <Stack.Screen
         name="Home"
         component={HomeScreen}
