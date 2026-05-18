@@ -2,11 +2,11 @@ import * as React from "react";
 import { createStaticNavigation } from "@react-navigation/native";
 
 import { createStackNavigator } from "@react-navigation/stack";
-import { OnboardingScreen as Onboarding } from "./src/screens/onboarding/Onboarding";
-import { SplashScreen as Splash } from "./src/screens/splash/Splash";
+import Onboarding from "./src/screens/onboarding/Onboarding";
+import Splash from "./src/screens/splash/Splash";
 import { Storage } from "./src/utils/asyncStorage";
-import { SignUpScreen } from "./src/screens/signup/SignUp";
-import { SignInScreen } from "./src/screens/signin/SignIn";
+import SignUpScreen from "./src/screens/signup/SignUp";
+import SignInScreen from "./src/screens/signin/SignIn";
 import MainScreen from "./src/screens/main/Main";
 import { ThemeProvider } from "./src/theme/ThemeProvider";
 
