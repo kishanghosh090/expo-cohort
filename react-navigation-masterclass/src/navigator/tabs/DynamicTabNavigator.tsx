@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 import { useNavigation, NavigationContainer } from "@react-navigation/native";
 import { Button } from "@react-navigation/elements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../../screens/HomeScreen";
 import DetailedScreen from "../../screens/DetailedScreen";
 import SearchScreen from "../../screens/SearchScreen";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -20,14 +21,15 @@ function HomeStackScreen() {
   );
 }
 
-const Tab = createBottomTabNavigator();
+const topTab = createBottomTabNavigator();
+// const topTab = createMaterialTopTabNavigator();
 
 function MyTabs() {
   return (
-    <Tab.Navigator
+    <topTab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused, color }) => {
           const icon =
             route.name === "Home"
               ? focused
@@ -41,19 +43,13 @@ function MyTabs() {
                   ? "person"
                   : "person-outline";
 
-          return <Ionicons name={icon} size={size} color={color} />;
+          return <Ionicons name={icon} color={color} />;
         },
       })}
     >
-      <Tab.Screen
-        name="Home"
-        component={HomeStackScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen name="Search" component={SearchScreen} />
-    </Tab.Navigator>
+      <topTab.Screen name="Home" component={HomeStackScreen} options={{}} />
+      <topTab.Screen name="Search" component={SearchScreen} />
+    </topTab.Navigator>
   );
 }
 

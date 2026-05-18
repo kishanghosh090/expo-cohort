@@ -4,16 +4,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../../screens/HomeScreen";
 import DetailedScreen from "../../screens/DetailedScreen";
 
-
-// assignment
+// assignment ----
 const Stack = createNativeStackNavigator({
   initialRouteName: "Home",
   screens: {
     Home: {
       screen: HomeScreen,
-      options:{
-        
-      }
+      options: {
+        headerShown: false,
+      },
     },
     Detail: DetailedScreen,
   },

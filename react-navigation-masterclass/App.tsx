@@ -19,5 +19,5 @@ import DynamicTabNavigator from "./src/navigator/tabs/DynamicTabNavigator";
 // -------- bottom tabs
 
 export default function App() {
-  return <DrawerNavigator />;
+  return <DynamicTabNavigator />;
 }
