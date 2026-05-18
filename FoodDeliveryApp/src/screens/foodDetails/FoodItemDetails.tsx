@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FOOD_ITEMS } from "../../constants/food";
 import { useRoute } from "@react-navigation/native";
@@ -13,14 +13,13 @@ export function FoodItemDetails() {
   const item = useMemo(() => {
     return FOOD_ITEMS.find((item) => item.id === itemId);
   }, [itemId]);
-
+  const handlePress = () => {
+    Alert.alert("UI only", "This is only UI.");
+  };
   if (!item) {
     return (
       <SafeAreaView
-        style={[
-          styles.safeArea,
-          { backgroundColor: theme.colors.background },
-        ]}
+        style={[styles.safeArea, { backgroundColor: theme.colors.background }]}
       >
         <Text style={[styles.errorText, { color: theme.colors.text }]}>
           Item not found
@@ -31,13 +30,15 @@ export function FoodItemDetails() {
 
   return (
     <SafeAreaView
-      style={[
-        styles.safeArea,
-        { backgroundColor: theme.colors.background },
-      ]}
+      style={[styles.safeArea, { backgroundColor: theme.colors.background }]}
     >
       <View style={styles.container}>
-        <View style={[styles.mediaWrap, { backgroundColor: theme.colors.placeholder }]}>
+        <View
+          style={[
+            styles.mediaWrap,
+            { backgroundColor: theme.colors.placeholder },
+          ]}
+        >
           <Image source={{ uri: item.image }} style={styles.image} />
         </View>
 
@@ -46,9 +47,7 @@ export function FoodItemDetails() {
             {item.name}
           </Text>
 
-          <Text
-            style={[styles.description, { color: theme.colors.textMuted }]}
-          >
+          <Text style={[styles.description, { color: theme.colors.textMuted }]}>
             {item.description}
           </Text>
 
@@ -61,7 +60,9 @@ export function FoodItemDetails() {
               },
             ]}
           >
-            <Text style={[styles.priceLabel, { color: theme.colors.textMuted }]}>
+            <Text
+              style={[styles.priceLabel, { color: theme.colors.textMuted }]}
+            >
               Price
             </Text>
             <Text style={[styles.price, { color: theme.colors.accent }]}>
@@ -70,12 +71,12 @@ export function FoodItemDetails() {
           </View>
 
           <Pressable
-            style={[
-              styles.addButton,
-              { backgroundColor: theme.colors.accent },
-            ]}
+            style={[styles.addButton, { backgroundColor: theme.colors.accent }]}
+            onPress={handlePress}
           >
-            <Text style={[styles.addButtonText, { color: theme.colors.surface }]}>
+            <Text
+              style={[styles.addButtonText, { color: theme.colors.surface }]}
+            >
               Add to cart
             </Text>
           </Pressable>

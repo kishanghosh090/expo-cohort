@@ -22,6 +22,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import foodDetails from "../foodDetails/FoodDetails";
 import FoodListForResturant from "../foodDetails/FoodListForResturant";
+import { FoodItemDetails } from "../foodDetails/FoodItemDetails";
 import { useAppTheme } from "../../theme/ThemeProvider";
 
 function HomeScreen() {
@@ -250,6 +251,15 @@ function MyStack() {
             (route.params as { foodName: string }).foodName ?? "Restaurant",
         })}
         component={FoodListForResturant}
+      />
+      <Stack.Screen
+        name="FoodItemDetails"
+        component={FoodItemDetails}
+        options={({ route }) => ({
+          title:
+            (route.params as { foodName: string }).foodName ?? "Food Details",
+          headerBackTitle: "menu",
+        })}
       />
     </Stack.Navigator>
   );

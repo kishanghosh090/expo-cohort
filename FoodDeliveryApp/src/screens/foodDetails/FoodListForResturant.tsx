@@ -7,16 +7,27 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useAppTheme } from "../../theme/ThemeProvider";
 
 export default function FoodListForResturant() {
+  const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const { theme } = useAppTheme();
-  const { resId, resName } = route.params;
+  const { resId, resName, itemId, foodName } = route.params ?? {};
 
   const foods = useMemo(() => {
-    const res = POPPULAR_RESTURANT_LIST.find((item) => item.id === resId);
-    const resMenu = res?.menu ?? [];
+    if (typeof resId === "number") {
+      const res = POPPULAR_RESTURANT_LIST.find((item) => item.id === resId);
+      const resMenu = res?.menu ?? [];
 
-    return FOOD_ITEMS.filter((food) => resMenu.includes(food.id));
-  }, [resId]);
+      return FOOD_ITEMS.filter((food) => resMenu.includes(food.id));
+    }
+
+    if (typeof itemId === "number") {
+      return FOOD_ITEMS.filter((food) => food.categoryId === itemId);
+    }
+
+    return [];
+  }, [itemId, resId]);
+
+  const title = resName ?? foodName ?? "Restaurant";
 
   return (
     <SafeAreaView
@@ -32,7 +43,7 @@ export default function FoodListForResturant() {
         ]}
       >
         <Text style={[styles.headerTitle, { color: theme.colors.text }]}>
-          {resName}
+          {title}
         </Text>
       </View>
       <FlatList
@@ -40,13 +51,22 @@ export default function FoodListForResturant() {
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContent}
         renderItem={({ item, index }) => (
-          <FoodItemCard
-            name={item.name}
-            description={item.description}
-            image={item.image}
-            price={item.price}
-            index={index}
-          />
+          <Pressable
+            onPress={() => {
+              navigation.navigate("FoodItemDetails", {
+                itemId: item.id,
+                foodName: item.name,
+              });
+            }}
+          >
+            <FoodItemCard
+              name={item.name}
+              description={item.description}
+              image={item.image}
+              price={item.price}
+              index={index}
+            />
+          </Pressable>
         )}
       />
     </SafeAreaView>
