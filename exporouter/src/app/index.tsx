@@ -6,6 +6,7 @@ export default function Index() {
     <View style={styles.container}>
       <Text>hello from chai code</Text>
       <Link href={"/about"}>about</Link>
+      <Link href={"/Login"}>sign</Link>
     </View>
   );
 }
