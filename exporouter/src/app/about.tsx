@@ -1,10 +1,20 @@
+import { router } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-
+import { Pressable, StyleSheet, Text, View } from "react-native";
+// useRouter
 const About = () => {
+  console.log(router);
+
   return (
-    <View>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>About</Text>
+      <Pressable
+        onPress={() => {
+          router.push("/");
+        }}
+      >
+        <Text>home</Text>
+      </Pressable>
     </View>
   );
 };
