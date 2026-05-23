@@ -18,7 +18,7 @@ export default function Index() {
       }
     }
     fetchUserData();
-  });
+  },[]);
   return (
     <View style={styles.container}>
       <Text>Edit src/app/index.tsx to edit this screen.</Text>
