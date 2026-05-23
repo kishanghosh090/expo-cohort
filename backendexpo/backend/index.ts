@@ -1,4 +1,6 @@
+import "@libsql/client";
 import cors from "cors";
+import "dotenv/config";
 import express from "express";
 import { db } from "./lib/db";
 
@@ -9,7 +11,7 @@ app.use(express.json());
 
 // Mirror: GET /api/hello
 app.get("/api/hello", (_req, res) => {
-  res.json({ msg: "hello from chai code" });
+  res.json({ msg: "hello from chai codeeee" });
 });
 
 // Mirror: GET /api/users
@@ -134,7 +136,7 @@ app.delete("/api/users/:id", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT =  3002;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
