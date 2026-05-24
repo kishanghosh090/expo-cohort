@@ -1,35 +1,39 @@
-import * as SecureStore from "expo-secure-store";
+import * as SQLite from "expo-sqlite";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+const db: SQLite.SQLiteDatabase = SQLite.openDatabaseSync("chai.db");
+// SQlite Data Types ->
 const HomeScreen = () => {
-  const [output, SetOutput] = useState<String>("");
+  const [output, setOutput] = useState();
 
-  const saveToken = async () => {
-    await SecureStore.setItemAsync("token", "eW91cl90b2tlbl9oZXJl");
-  };
-  const getToken = async () => {
-    const value = await SecureStore.getItemAsync("token");
-    SetOutput(value!);
-  };
-
-  const deleteToken = async () => {
-    await SecureStore.deleteItemAsync("token");
-    SetOutput("token deleted");
+  const createTable = async () => {
+    db.execSync(`
+        CREATE TABLE IF NOT EXISTS Users
+        (
+          id NTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT,
+          age INTEGER
+        );
+    `);
   };
 
-  const checkAvailability = async () => {
-    const available = await SecureStore.isAvailableAsync();
-
-    SetOutput(available ? "secure store is availe" : "not available");
+  const insertData = () => {
+    db.runSync(
+      `
+        INSERT INTO Users (name, age) VALUES 
+        (?,?)
+      `,
+      "kishan",
+      20,
+    );
   };
-
-  const seveObj = async () => {
-    const user = {
-      name: "kishan",
-      age: 20,
-    };
-    await SecureStore.setItemAsync("token2", JSON.stringify(user));
+  const getDatas = () => {
+    db.getAllSync(
+      `
+        SELECT * FROM Users
+      `,
+    );
   };
 
   return (
