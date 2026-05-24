@@ -1,142 +1,138 @@
-// import React, { useState } from "react";
-// import { StyleSheet, Text, View } from "react-native";
-// // import * as FileSystem from "expo-file-system/legacy";
-// import { File, Paths } from "expo-file-system";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-// const HomeScreen = () => {
-//   const [output, setOutput] = useState("");
+export default function Index() {
+  const [value, setValue] = useState("");
+  const [status, setStatus] = useState("Ready to test AsyncStorage.");
 
-//   const demoFile = new File(Paths.document, "demo.txt");
+  const saveData = async () => {
+    await AsyncStorage.setItem("user", "chai code");
+    setStatus('Saved "user" = "chai code"');
+  };
+  const getData = async () => {
+    const value = await AsyncStorage.getItem("user");
 
-//   // console.log(Paths.document);
-//   const writeFile = async () => {
-//     await demoFile.write("hhdhdhdhd");
-//   };
+    setValue(value ?? "");
+    setStatus(value ? `Loaded "user" = ${value}` : 'No value found for "user"');
+  };
 
-//   const copiedFile = new File(Paths.document, "copiedFile.txt");
+  const removeData = async () => {
+    await AsyncStorage.removeItem("user");
+    setValue("");
+    setStatus('Removed "user"');
+  };
 
-//   const readFile = async () => {
-//     const data = await demoFile.text();
-//     console.log(data);
-
-//     return data;
-//   };
-
-//   const appendFIle = async () => {
-//     const oldData = await readFile();
-//     await demoFile.write(oldData + "\n" + "my new Data");
-//   };
-
-//   const copyFile = async () => {
-//     await demoFile.copy(copiedFile);
-//   };
-
-//   const getFileInfo = () => {
-//     const info = {
-//       exists: demoFile.exists,
-//       size: demoFile.size,
-//       uri: demoFile.uri,
-//       name: demoFile.name,
-//     };
-//   };
-
-//   return (
-//     <View>
-//       <Text>HomeScreen</Text>
-//     </View>
-//   );
-// };
-
-// export default HomeScreen;
-
-// const styles = StyleSheet.create({});
-
-import { Gyroscope } from "expo-sensors";
-import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-export default function App() {
-  const [{ x, y, z }, setData] = useState({
-    x: 0,
-    y: 0,
-    z: 0,
-  });
-  const [subscription, setSubscription] = useState<{
-    remove: () => void;
-  } | null>(null);
-
-  const _slow = () => Gyroscope.setUpdateInterval(1000);
-  const _fast = () => Gyroscope.setUpdateInterval(16);
-
-  const _subscribe = () => {
-    setSubscription(
-      Gyroscope.addListener((gyroscopeData) => {
-        setData(gyroscopeData);
-      }),
+  const clearStorage = async () => {
+    await AsyncStorage.clear();
+    setValue("");
+    setStatus("Cleared all AsyncStorage values");
+  };
+  const getKeys = async () => {
+    const val = await AsyncStorage.getAllKeys();
+    setStatus(`Keys: ${val.join(", ") || "(none)"}`);
+  };
+  const saveMultiSet = async () => {
+    await AsyncStorage.multiSet([
+      ["name", "kishan"],
+      ["role", "dev"],
+    ]);
+    setStatus('Saved "name" and "role"');
+  };
+  const multiGet = async () => {
+    const entries = await AsyncStorage.multiGet(["name", "role"]);
+    setStatus(
+      entries
+        .map(([key, storedValue]) => `${key}: ${storedValue ?? "(empty)"}`)
+        .join(" | "),
     );
   };
 
-  const _unsubscribe = () => {
-    subscription && subscription.remove();
-    setSubscription(null);
-  };
-
-  useEffect(() => {
-    _subscribe();
-    return () => _unsubscribe();
-  }, []);
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Gyroscope:</Text>
-      <Text style={styles.text}>x: {x}</Text>
-      <Text style={styles.text}>y: {y}</Text>
-      <Text style={styles.text}>z: {z}</Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={subscription ? _unsubscribe : _subscribe}
-          style={styles.button}
-        >
-          <Text>{subscription ? "On" : "Off"}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={_slow}
-          style={[styles.button, styles.middleButton]}
-        >
-          <Text>Slow</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={_fast} style={styles.button}>
-          <Text>Fast</Text>
-        </TouchableOpacity>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>AsyncStorage test</Text>
+      <Text style={styles.subtitle}>{status}</Text>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>Current value</Text>
+        <Text style={styles.value}>{value || "(empty)"}</Text>
       </View>
-    </View>
+
+      <View style={styles.buttonGrid}>
+        <ActionButton label="Save user" onPress={saveData} />
+        <ActionButton label="Load user" onPress={getData} />
+        <ActionButton label="Remove user" onPress={removeData} />
+        <ActionButton label="Clear all" onPress={clearStorage} />
+        <ActionButton label="Get keys" onPress={getKeys} />
+        <ActionButton label="Save multi" onPress={saveMultiSet} />
+        <ActionButton label="Load multi" onPress={multiGet} />
+      </View>
+    </ScrollView>
+  );
+}
+
+function ActionButton({
+  label,
+  onPress,
+}: {
+  label: string;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable style={styles.button} onPress={onPress}>
+      <Text style={styles.buttonText}>{label}</Text>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 10,
+    padding: 24,
+    backgroundColor: "#0f172a",
+    gap: 16,
   },
-  text: {
-    textAlign: "center",
+  title: {
+    fontSize: 32,
+    fontWeight: "700",
+    color: "#f8fafc",
   },
-  buttonContainer: {
+  subtitle: {
+    fontSize: 16,
+    color: "#cbd5e1",
+  },
+  card: {
+    borderRadius: 20,
+    padding: 20,
+    backgroundColor: "#111827",
+    borderWidth: 1,
+    borderColor: "#334155",
+  },
+  label: {
+    fontSize: 14,
+    color: "#94a3b8",
+    marginBottom: 8,
+  },
+  value: {
+    fontSize: 20,
+    color: "#f8fafc",
+    fontWeight: "600",
+  },
+  buttonGrid: {
     flexDirection: "row",
-    alignItems: "stretch",
-    marginTop: 15,
+    flexWrap: "wrap",
+    gap: 12,
   },
   button: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#eee",
-    padding: 10,
+    minWidth: "46%",
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    backgroundColor: "#38bdf8",
   },
-  middleButton: {
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: "#ccc",
+  buttonText: {
+    color: "#082f49",
+    fontWeight: "700",
+    textAlign: "center",
   },
 });
