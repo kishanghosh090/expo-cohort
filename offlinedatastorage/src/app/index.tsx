@@ -1,109 +1,69 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+import * as SecureStore from "expo-secure-store";
+import React, { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-export default function Index() {
-  const [value, setValue] = useState("");
-  const [status, setStatus] = useState("Ready to test AsyncStorage.");
+const HomeScreen = () => {
+  const [output, setOutput] = useState<string>("Ready to test SecureStore.");
 
-  const saveData = async () => {
-    await AsyncStorage.setItem("user", "chai code");
-    setStatus('Saved "user" = "chai code"');
+  const saveToken = async () => {
+    await SecureStore.setItemAsync("token", "eW91cl90b2tlbl9oZXJl");
+    setOutput('Saved "token"');
   };
-  const getData = async () => {
-    const value = await AsyncStorage.getItem("user");
+  const getToken = async () => {
+    const value = await SecureStore.getItemAsync("token");
 
-    setValue(value ?? "");
-    setStatus(value ? `Loaded "user" = ${value}` : 'No value found for "user"');
+    setOutput(value ?? 'No value found for "token"');
   };
 
-  const removeData = async () => {
-    await AsyncStorage.removeItem("user");
-    setValue("");
-    setStatus('Removed "user"');
+  const deleteToken = async () => {
+    await SecureStore.deleteItemAsync("token");
+    setOutput("Token deleted");
   };
 
-  const clearStorage = async () => {
-    await AsyncStorage.clear();
-    setValue("");
-    setStatus("Cleared all AsyncStorage values");
-  };
-  const getKeys = async () => {
-    const val = await AsyncStorage.getAllKeys();
-    setStatus(`Keys: ${val.join(", ") || "(none)"}`);
-  };
-  const saveMultiSet = async () => {
-    await AsyncStorage.multiSet([
-      ["name", "kishan"],
-      ["role", "dev"],
-    ]);
-    setStatus('Saved "name" and "role"');
-  };
-  const multiGet = async () => {
-    const entries = await AsyncStorage.multiGet(["name", "role"]);
-    setStatus(
-      entries
-        .map(([key, storedValue]) => `${key}: ${storedValue ?? "(empty)"}`)
-        .join(" | "),
+  const checkAvailability = async () => {
+    const available = await SecureStore.isAvailableAsync();
+
+    setOutput(
+      available ? "SecureStore is available" : "SecureStore is not available",
     );
   };
 
-  const mergeUsers = async () => {
-    const USER_1 = {
-      name: "Tom",
+  const saveObject = async () => {
+    const user = {
+      name: "kishan",
       age: 20,
-      traits: {
-        hair: "black",
-        eyes: "blue",
-      },
     };
+    await SecureStore.setItemAsync("token2", JSON.stringify(user));
+    setOutput('Saved object in "token2"');
+  };
 
-    const USER_2 = {
-      name: "Sarah",
-      age: 21,
-      hobby: "cars",
-      traits: {
-        eyes: "green",
-      },
-    };
+  const getObject = async () => {
+    const value = await SecureStore.getItemAsync("token2");
 
-    try {
-      //save first user
-      await AsyncStorage.setItem("merge_user", JSON.stringify(USER_1));
-
-      // merge USER_2 into saved USER_1
-      await AsyncStorage.mergeItem("merge_user", JSON.stringify(USER_2));
-
-      // read merged item
-      const currentUser = await AsyncStorage.getItem("merge_user");
-
-      console.log(currentUser);
-    } catch (err) {}
+    setOutput(value ? value : 'No value found for "token2"');
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>AsyncStorage test</Text>
-      <Text style={styles.subtitle}>{status}</Text>
+      <Text style={styles.title}>SecureStore test</Text>
+      <Text style={styles.subtitle}>{output}</Text>
 
       <View style={styles.card}>
-        <Text style={styles.label}>Current value</Text>
-        <Text style={styles.value}>{value || "(empty)"}</Text>
+        <Text style={styles.cardLabel}>Stored keys</Text>
+        <Text style={styles.cardValue}>token, token2</Text>
       </View>
 
       <View style={styles.buttonGrid}>
-        <ActionButton label="Save user" onPress={saveData} />
-        <ActionButton label="Load user" onPress={getData} />
-        <ActionButton label="Remove user" onPress={removeData} />
-        <ActionButton label="Clear all" onPress={clearStorage} />
-        <ActionButton label="Get keys" onPress={getKeys} />
-        <ActionButton label="Save multi" onPress={saveMultiSet} />
-        <ActionButton label="Load multi" onPress={multiGet} />
-        <ActionButton label="merge" onPress={mergeUsers} />
+        <ActionButton label="Save token" onPress={saveToken} />
+        <ActionButton label="Load token" onPress={getToken} />
+        <ActionButton label="Delete token" onPress={deleteToken} />
+        <ActionButton label="Check availability" onPress={checkAvailability} />
+        <ActionButton label="Save object" onPress={saveObject} />
+        <ActionButton label="Load object" onPress={getObject} />
       </View>
     </ScrollView>
   );
-}
+};
 
 function ActionButton({
   label,
@@ -119,9 +79,11 @@ function ActionButton({
   );
 }
 
+export default HomeScreen;
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: 24,
     backgroundColor: "#0f172a",
     gap: 16,
@@ -142,13 +104,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#334155",
   },
-  label: {
+  cardLabel: {
     fontSize: 14,
     color: "#94a3b8",
     marginBottom: 8,
   },
-  value: {
-    fontSize: 20,
+  cardValue: {
+    fontSize: 18,
     color: "#f8fafc",
     fontWeight: "600",
   },
@@ -162,10 +124,10 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 16,
-    backgroundColor: "#38bdf8",
+    backgroundColor: "#34d399",
   },
   buttonText: {
-    color: "#082f49",
+    color: "#064e3b",
     fontWeight: "700",
     textAlign: "center",
   },
