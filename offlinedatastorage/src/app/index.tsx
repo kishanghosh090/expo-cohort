@@ -1,39 +1,33 @@
-import * as SQLite from "expo-sqlite";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-
-const db: SQLite.SQLiteDatabase = SQLite.openDatabaseSync("chai.db");
-// SQlite Data Types ->
+// import * as FileSystem from "expo-file-system/legacy";
+import { File, Paths } from "expo-file-system";
 const HomeScreen = () => {
-  const [output, setOutput] = useState();
+  const [output, setOutput] = useState("");
 
-  const createTable = async () => {
-    db.execSync(`
-        CREATE TABLE IF NOT EXISTS Users
-        (
-          id NTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT,
-          age INTEGER
-        );
-    `);
+  const demoFile = new File(Paths.document, "demo.txt");
+
+  // console.log(Paths.document);
+  const writeFile = async () => {
+    await demoFile.write("hhdhdhdhd");
   };
 
-  const insertData = () => {
-    db.runSync(
-      `
-        INSERT INTO Users (name, age) VALUES 
-        (?,?)
-      `,
-      "kishan",
-      20,
-    );
+  const copiedFile = new File(Paths.document, "copiedFile.txt");
+
+  const readFile = async () => {
+    const data = await demoFile.text();
+    console.log(data);
+
+    return data;
   };
-  const getDatas = () => {
-    db.getAllSync(
-      `
-        SELECT * FROM Users
-      `,
-    );
+
+  const appendFIle = async () => {
+    const oldData = await readFile();
+    await demoFile.write(oldData + "\n" + "my new Data");
+  };
+
+  const copyFile = async () => {
+    await demoFile.copy(copiedFile);
   };
 
   return (
