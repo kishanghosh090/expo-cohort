@@ -1,54 +1,44 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+import * as SecureStore from "expo-secure-store";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function Index() {
-  const [date, setData] = useState("");
+const HomeScreen = () => {
+  const [output, SetOutput] = useState<String>("");
 
-  // set item
-  const saveData = async () => {
-    await AsyncStorage.setItem("user", "chai code");
+  const saveToken = async () => {
+    await SecureStore.setItemAsync("token", "eW91cl90b2tlbl9oZXJl");
   };
-  const getData = async () => {
-    const value = await AsyncStorage.getItem("user");
-
-    setData(value!!);
+  const getToken = async () => {
+    const value = await SecureStore.getItemAsync("token");
+    SetOutput(value!);
   };
 
-  const removeData = async () => {
-    await AsyncStorage.removeItem("user");
-    setData("");
+  const deleteToken = async () => {
+    await SecureStore.deleteItemAsync("token");
+    SetOutput("token deleted");
   };
 
-  // clear async storage
-  const clearStorage = async () => {
-    await AsyncStorage.clear();
+  const checkAvailability = async () => {
+    const available = await SecureStore.isAvailableAsync();
+
+    SetOutput(available ? "secure store is availe" : "not available");
   };
-  const getKeys = async () => {
-    const val = await AsyncStorage.getAllKeys();
-    console.log(val);
-  };
-  const saveMultiSet = async () => {
-    await AsyncStorage.multiSet([
-      ["name", "kishan"],
-      ["role", "dev"],
-    ]);
-  };
-  const multiGet = async () => {
-    await AsyncStorage.multiGet(["name", "role"]);
+
+  const seveObj = async () => {
+    const user = {
+      name: "kishan",
+      age: 20,
+    };
+    await SecureStore.setItemAsync("token2", JSON.stringify(user));
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Edit src/app/index.tsx to edit this screen.</Text>
+    <View>
+      <Text>HomeScreen</Text>
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+export default HomeScreen;
+
+const styles = StyleSheet.create({});
