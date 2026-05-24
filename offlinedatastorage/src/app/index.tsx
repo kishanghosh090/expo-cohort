@@ -1,18 +1,27 @@
 import NetInfo from "@react-native-community/netinfo";
 import * as SecureStore from "expo-secure-store";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 const HomeScreen = () => {
   const [output, setOutput] = useState<string>("Ready to test SecureStore.");
 
-  NetInfo.fetch().then((state) => {
-    console.log("Connection type", state.type);
-    console.log("Is connected?", state.isConnected);
-  });
-  NetInfo.addEventListener((state) => {
-    console.log(state);
-  });
+  // NetInfo.fetch().then((state) => {
+  //   console.log("Connection type", state.type);
+  //   console.log("Is connected?", state.isConnected);
+  // });
+  // NetInfo.addEventListener((state) => {
+  //   console.log(state);
+  // });
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      console.log("Connection type", state.type);
+      console.log("Is connected?", state.isConnected);
+    });
+
+    // To unsubscribe to these update, just use:
+    unsubscribe();
+  }, []);
 
   const saveToken = async () => {
     await SecureStore.setItemAsync("token", "eW91cl90b2tlbl9oZXJl");
