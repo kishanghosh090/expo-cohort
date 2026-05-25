@@ -1,45 +1,36 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-// import * as FileSystem from "expo-file-system/legacy";
+
+// import * as FileSystem from "expo-file-system/legacy"; // legecy
+
 import { File, Paths } from "expo-file-system";
 
 const HomeScreen = () => {
   const [output, setOutput] = useState("");
 
   const demoFile = new File(Paths.document, "demo.txt");
+  try {
+    demoFile.create();
+  } catch (error) {}
 
-  // console.log(Paths.document);
   const writeFile = async () => {
-    await demoFile.write("hello from kishan rana ghosh");
+    demoFile.write("hello from kishan rana ghosh");
   };
-
-  const copiedFile = new File(Paths.document, "copiedFile.txt");
+  // writeFile();
 
   const readFile = async () => {
     const data = await demoFile.text();
     console.log(data);
-
     return data;
   };
+  readFile();
 
-  const appendFIle = async () => {
-    const oldData = await readFile();
-    await demoFile.write(oldData + "\n" + "my new Data");
+  const appendFile = async () => {
+    const olddata = await readFile();
+    await demoFile.write(olddata + " this is kishan from chai code");
   };
-
-  const copyFile = async () => {
-    await demoFile.copy(copiedFile);
-  };
-
-  const getFileInfo = () => {
-    const info = {
-      exists: demoFile.exists,
-      size: demoFile.size,
-      uri: demoFile.uri,
-      name: demoFile.name,
-    };
-  };
-
+  appendFile();
+  readFile();
   return (
     <View>
       <Text>HomeScreen</Text>
