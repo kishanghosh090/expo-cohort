@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Image,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -15,6 +16,7 @@ import { Directory, File, Paths } from "expo-file-system";
 const HomeScreen = () => {
   const [output, setOutput] = useState("");
   const [busyAction, setBusyAction] = useState<string | null>(null);
+  const [image, setImage] = useState<any>();
 
   const demoFile = new File(Paths.document, "demo.txt");
   const copiedFile = new File(Paths.document, "copied-demo.txt");
@@ -125,11 +127,26 @@ const HomeScreen = () => {
   const createFolder = () => {
     notesDirectory.create();
   };
+  // createFolder();
 
   const readDir = async () => {
-    const files = await notesDirectory.list();
+    const files = await notesDirectory.list()[0];
     console.log(files);
+    setImage(files.uri)
+
   };
+  readDir();
+
+
+  const download = async () => {
+    const download = await File.downloadFileAsync(
+      "https://avatars.githubusercontent.com/u/129781766?v=4",
+      notesDirectory,
+    );
+
+    setImage(download.uri);
+  };
+  // download();
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -137,6 +154,7 @@ const HomeScreen = () => {
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
       >
+        <Image source={{ uri: image ? image : "" }} height={300} width={300} />
         <View style={styles.heroCard}>
           <View style={styles.badgeRow}>
             <View style={styles.badge}>
