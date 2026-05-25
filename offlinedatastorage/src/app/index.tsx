@@ -10,7 +10,7 @@ import {
 
 // import * as FileSystem from "expo-file-system/legacy"; // legecy
 
-import { File, Paths } from "expo-file-system";
+import { Directory, File, Paths } from "expo-file-system";
 
 const HomeScreen = () => {
   const [output, setOutput] = useState("");
@@ -120,6 +120,16 @@ const HomeScreen = () => {
     { label: "Copy", hint: "Duplicate into copied-demo.txt", onPress: copy },
     { label: "Move", hint: "Relocate to cache storage", onPress: moveFile },
   ];
+
+  const notesDirectory = new Directory(Paths.document, "notes");
+  const createFolder = () => {
+    notesDirectory.create();
+  };
+
+  const readDir = async () => {
+    const files = await notesDirectory.list();
+    console.log(files);
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
