@@ -79,6 +79,17 @@ const HomeScreen = () => {
     await demoFile.delete();
   };
 
+  const getFileInfo = () => {
+    const info = {
+      exist: demoFile.exists,
+      size: demoFile.size,
+      uri: demoFile.uri,
+      name: demoFile.name,
+    };
+    setOutput(JSON.stringify(info));
+    return info;
+  };
+
   const statusLines = [
     {
       label: "Demo file",
