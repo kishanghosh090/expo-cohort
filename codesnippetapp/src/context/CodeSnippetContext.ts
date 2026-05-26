@@ -4,14 +4,20 @@ export const CreateCodeSnippetContext = createContext({
   codeSnippet: [
     {
       id: 1,
-      code: "todo message",
+      color: "#212121",
+      title: "this is ref",
+      lang: "javascript",
+      code: "console.log('hello from kishan')",
       isFav: false,
+      createdAt: Date.now().toLocaleString(),
+      updatedAt: Date.now().toLocaleString(),
     },
   ],
-  createCodeSnippet: (todo: any) => {},
-  editCodeSnippet: (id: any, todo: any) => {},
+  createCodeSnippet: (code: any) => {},
+  editCodeSnippet: (id: any, code: any) => {},
   deleteCodeSnippet: (id: any) => {},
   toggleFav: (id: any) => {},
 });
 
-export const CreateCodeSnippetContextProvider = CreateCodeSnippetContext.Provider;
+export const CreateCodeSnippetContextProvider =
+  CreateCodeSnippetContext.Provider;
