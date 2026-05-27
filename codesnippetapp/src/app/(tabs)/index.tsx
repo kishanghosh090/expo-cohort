@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import CodeCard from "@/components/CodeCard";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { colorPalettes } from "@/theme/colorPalettes";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const demoSnippets = [
   {
