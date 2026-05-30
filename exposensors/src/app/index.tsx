@@ -1,20 +1,78 @@
-import GyroScopeCard from "@/components/GyroScopeCard";
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import { LightSensor } from "expo-sensors";
+import { useEffect, useState } from "react";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-const Home = () => {
+export default function App() {
+  const [{ illuminance }, setData] = useState<any>({ illuminance: 0 });
+  const [subscription, setSubscription] = useState<any>(null);
+
+  const toggle = () => {
+    if (subscription) {
+      unsubscribe();
+    } else {
+      subscribe();
+    }
+  };
+
+  const subscribe = () => {
+    setSubscription(
+      LightSensor.addListener((sensorData) => {
+        setData(sensorData);
+      }),
+    );
+  };
+
+  const unsubscribe = () => {
+    subscription && subscription.remove();
+    setSubscription(null);
+  };
+
+  useEffect(() => {
+    subscribe();
+    return () => unsubscribe();
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <GyroScopeCard />
+    <View style={styles.sensor}>
+      <Text>Light Sensor:</Text>
+      <Text>
+        Illuminance:{" "}
+        {Platform.OS === "android"
+          ? `${illuminance} lx`
+          : `Only available on Android`}
+      </Text>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={toggle} style={styles.button}>
+          <Text>Toggle</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
-};
-
-export default Home;
+}
 
 const styles = StyleSheet.create({
-  container: {
+  sensor: {
     flex: 1,
-    backgroundColor: "#020617",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 10,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    alignItems: "stretch",
+    marginTop: 15,
+  },
+  button: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#eee",
+    padding: 10,
   },
 });

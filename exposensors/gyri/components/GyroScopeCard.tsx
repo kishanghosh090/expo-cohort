@@ -2,7 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { useGyro } from "@/hooks/use-gyro";
+import { useGyro } from "../hooks/use-gyro";
 
 const ROTATION = 34;
 const DEPTH = 10;
