@@ -1,7 +1,7 @@
-import { useAccelerometer } from "@/hooks/use-accelerometer";
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useAccelerometer } from "../hooks/use-accelerometer";
 
 const BALL_SIZE = 120;
 
