@@ -1,0 +1,13 @@
+name: kishan
+
+"on":
+  push:
+    branches: [main]
+
+jobs:
+  hello:
+    steps:
+      - name: echo hello
+        run: echo "hello world"
+      - name: echo hello again
+        run: echo "hello again"
