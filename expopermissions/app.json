@@ -8,7 +8,8 @@
     "scheme": "expopermissions",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.yourname.yourappname"
     },
     "android": {
       "adaptiveIcon": {
@@ -17,7 +18,7 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "permissions": ["android.permisson.CAMERA"],
+      "permissions": ["android.permission.CAMERA"],
       "predictiveBackGestureEnabled": false
     },
     "web": {
